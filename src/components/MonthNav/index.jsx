@@ -1,6 +1,8 @@
 import moment from "moment";
 import { useEffect } from "react";
 
+const MonthPill = () => null;
+
 const MonthNav = ({ view, setView }) => {
   const today = moment();
   const twelveMonths = [...Array(12).keys()];

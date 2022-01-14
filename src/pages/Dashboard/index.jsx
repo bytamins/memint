@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import moment from "moment";
 import MonthNav from "../../components/MonthNav";
 import YearNav from "../../components/YearNav";
+import { Link } from "react-router-dom";
 
 const YEAR_FORMAT = "YYYY";
 const MONTH_FORMAT = "MMMM";
@@ -26,20 +27,23 @@ const Dashboard = () => {
   return (
     <div className="container mt-5">
       <div className="row">
-        <div className="col-md-4 offset-md-4 text-center mt-5">
+        <div className="col-md-4 offset-md-4 text-center mb-5">
           <h1>Dashboard</h1>
+          <hr />
         </div>
       </div>
       <div className="row">
-        <div className="col-md-3">
+        <div className="col-md-2">
           <h5>Years</h5>
+          <hr />
           <YearNav birthdate={user.birthdate} view={view} setView={setView} />
         </div>
-        <div className="col-md-3">
-          <h3>Months</h3>
+        <div className="col-md-2">
+          <h5>Months</h5>
+          <hr />
           <MonthNav view={view} setView={setView} />
         </div>
-        <div className="col-md-6">
+        <div className="col-md-8">
           <div className="row">
             {[
               ...Array(
@@ -48,30 +52,35 @@ const Dashboard = () => {
                   `${YEAR_FORMAT}/${MONTH_FORMAT}`
                 ).daysInMonth()
               ).keys(),
-            ].map((day) => (
-              <div className="col-md-4">
-                <div class="card mb-4">
-                  {/* <img src="..." class="card-img-top" alt="..." /> */}
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      {moment(
-                        `${view.month}/${day + 1}/${view.year}`,
-                        "MMMM/D/YYYY"
-                      ).format("M/D/YY")}
-                    </h5>
-                    <p class="card-text text-muted">Empty description...</p>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <button class="btn btn-primary w-100">Edit</button>
-                      </div>
-                      <div className="col-md-6">
-                        <button class="btn btn-primary w-100">Mint</button>
+            ].map((day) => {
+              const dayLabel = moment(
+                `${view.month}/${day + 1}/${view.year}`,
+                "MMMM/D/YYYY"
+              ).format("M/D/YY");
+              return (
+                <div className="col-md-4">
+                  <div class="card mb-4">
+                    {/* <img src="..." class="card-img-top" alt="..." /> */}
+                    <div class="card-body">
+                      <h5 class="card-title">{dayLabel}</h5>
+                      <p class="card-text text-muted">Empty description...</p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <Link
+                            to={`/day/${moment(dayLabel).unix()}`}
+                            class="btn btn-primary w-100">
+                            Edit
+                          </Link>
+                        </div>
+                        <div className="col-md-6">
+                          <button class="btn btn-success w-100">Mint</button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
