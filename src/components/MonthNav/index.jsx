@@ -22,7 +22,7 @@ const MonthNav = ({ view, setView }) => {
           .subtract(monthDiff, "months")
           .format("MMMM");
         return (
-          <li className="nav-item">
+          <li className="nav-item" key={monthLabel}>
             <a
               className={`nav-link ${view.month === monthLabel && "active"}`}
               href="#top"
@@ -47,7 +47,7 @@ const MonthNav = ({ view, setView }) => {
           .add(monthDiff, "month")
           .format("MMMM");
         return (
-          <li className="nav-item">
+          <li className="nav-item" key={monthLabel}>
             <a
               className={`nav-link ${view.month === monthLabel && "active"}`}
               href="#top"

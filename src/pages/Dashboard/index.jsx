@@ -59,21 +59,25 @@ const Dashboard = () => {
               ).format("M/D/YY");
               return (
                 <div className="col-md-4">
-                  <div class="card mb-4">
-                    {/* <img src="..." class="card-img-top" alt="..." /> */}
-                    <div class="card-body">
-                      <h5 class="card-title">{dayLabel}</h5>
-                      <p class="card-text text-muted">Empty description...</p>
+                  <div className="card mb-4">
+                    {/* <img src="..." className="card-img-top" alt="..." /> */}
+                    <div className="card-body">
+                      <h5 className="card-title">{dayLabel}</h5>
+                      <p className="card-text text-muted">
+                        Empty description...
+                      </p>
                       <div className="row">
                         <div className="col-md-6">
                           <Link
                             to={`/day/${moment(dayLabel).unix()}`}
-                            class="btn btn-primary w-100">
+                            className="btn btn-primary w-100">
                             Edit
                           </Link>
                         </div>
                         <div className="col-md-6">
-                          <button class="btn btn-success w-100">Mint</button>
+                          <button className="btn btn-success w-100">
+                            Mint
+                          </button>
                         </div>
                       </div>
                     </div>

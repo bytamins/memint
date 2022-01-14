@@ -12,7 +12,7 @@ const YearNav = ({ birthdate, view, setView }) => {
     <ul className="nav nav-pills flex-column">
       {[...Array(today.diff(moment(birthdate), "years") + 2).keys()].map(
         (yearDiff) => (
-          <li className="nav-item">
+          <li className="nav-item" key={yearDiff}>
             <a
               className={`nav-link ${
                 view.year ===
