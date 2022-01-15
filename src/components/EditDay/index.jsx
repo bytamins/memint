@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { UserContext } from "../../providers/user";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { useMoralis, useNewMoralisObject } from "react-moralis";
 import { toast } from "react-toastify";
 import InputField from "../InputField";
 import ImageUpload from "../ImageUpload";
@@ -8,17 +7,17 @@ import moment from "moment";
 import { DAY_LABEL_FORMAT } from "../../utils/constants";
 
 const EditDay = ({ tokenId, day, timestamp }) => {
-  const { account } = useContext(UserContext);
-  const [details, setDetails] = useState(day);
+  const { user } = useMoralis();
 
+  const [details, setDetails] = useState(day);
+  const { isSaving, error, save } = useNewMoralisObject("Day");
+
+  // update days object
   async function saveChanges() {
     try {
-      const db = getFirestore();
-
-      await setDoc(doc(db, "days", tokenId), {
-        ...details,
+      save({
+        user,
         tokenId,
-        account,
         timestamp,
         dayLabel: moment(timestamp * 1000).format(DAY_LABEL_FORMAT),
       });

@@ -1,4 +1,3 @@
-import { getFirestore, doc, setDoc } from "firebase/firestore";
 import moment from "moment";
 import { useContext, useState } from "react";
 import { UserContext } from "../../providers/user";
@@ -8,16 +7,22 @@ import InputField from "../../components/InputField";
 const Onboard = () => {
   let navigate = useNavigate();
 
-  const { getUser, account } = useContext(UserContext);
+  const { user, refreshUser } = useContext(UserContext);
   const [birthdate, setBirthdate] = useState("");
-  async function createUser() {
-    const db = getFirestore();
-    await setDoc(doc(db, "accounts", account), {
-      address: account,
-      birthdate: moment(birthdate).unix(),
-      birthdateLabel: birthdate,
-    });
-    await getUser();
+
+  async function updateBirthdate() {
+    user.set("birthdate_unix", moment(birthdate).unix());
+    user.set("birthdate_label", birthdate);
+    await user.save();
+    await refreshUser();
+
+    // const db = getFirestore();
+    // await setDoc(doc(db, "accounts", account), {
+    //   address: account,
+    //   birthdate: moment(birthdate).unix(),
+    //   birthdateLabel: birthdate,
+    // });
+    // await getUser();
     navigate("/dashboard");
   }
   return (
@@ -38,7 +43,7 @@ const Onboard = () => {
           </div>
         </div>
         <button
-          onClick={createUser}
+          onClick={updateBirthdate}
           type="button"
           className="btn btn-primary w-100">
           Go to Dashboard

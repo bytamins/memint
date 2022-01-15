@@ -1,10 +1,13 @@
 import { useEffect, useContext } from "react";
 import moment from "moment";
+import { useMoralis, useMoralisQuery } from "react-moralis";
+
 import { UserContext } from "../../providers/user";
 import { YEAR_FORMAT } from "../../utils/constants";
 
 const YearNav = ({ view, setView }) => {
-  const { user } = useContext(UserContext);
+  const { user } = useMoralis();
+
   const today = moment();
 
   useEffect(() => {
@@ -14,7 +17,9 @@ const YearNav = ({ view, setView }) => {
   return (
     <ul className="nav nav-pills flex-column">
       {[
-        ...Array(today.diff(moment(user.birthdate * 1000), "years") + 2).keys(),
+        ...Array(
+          today.diff(moment(user.get("birthdate_unix") * 1000), "years") + 2
+        ).keys(),
       ].map((yearDiff) => (
         <li className="nav-item" key={yearDiff}>
           <a

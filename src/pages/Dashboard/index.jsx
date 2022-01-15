@@ -1,6 +1,9 @@
 import SuggestedDays from "../../components/SuggestedDays";
 
-const Dashboard = () => {
+const Dashboard = ({ user }) => {
+  if (!user) {
+    return null;
+  }
   return (
     <div className="container mt-5">
       <div className="row">

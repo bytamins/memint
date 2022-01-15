@@ -6,14 +6,25 @@ const UserContext = createContext();
 const UserConsumer = UserContext.Consumer;
 
 const UserProvider = ({ children }) => {
-  const { authenticate, isAuthenticated, user: MoralisUser } = useMoralis();
-  const [loading, setLoading] = useState(false);
+  const {
+    authenticate,
+    isAuthenticated,
+    user: MoralisUser,
+    currentAsync,
+  } = useMoralis();
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+
+  async function refreshUser() {
+    const response = await currentAsync();
+    setUser(response);
+  }
 
   useEffect(() => {
     if (isAuthenticated) {
       setUser(MoralisUser);
     }
+    setLoading(false);
   }, [isAuthenticated]);
 
   return (
@@ -23,6 +34,7 @@ const UserProvider = ({ children }) => {
         isAuthenticated,
         loading,
         user,
+        refreshUser,
       }}>
       {children}
     </UserContext.Provider>

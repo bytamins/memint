@@ -1,21 +1,24 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
+import { useMoralis, useMoralisQuery } from "react-moralis";
+
 import MonthNav from "../../components/MonthNav";
 import YearNav from "../../components/YearNav";
 import { YEAR_FORMAT, MONTH_FORMAT, DAY_FORMAT } from "../../utils/constants";
 import DaysNav from "../../components/DaysNav";
 
 const Calendar = () => {
+  const { user } = useMoralis();
   const [view, setView] = useState({
     year: moment().format(YEAR_FORMAT),
     month: moment().format(MONTH_FORMAT),
     day: moment().format(DAY_FORMAT),
   });
 
-  useEffect(() => {
-    console.log("VIEW CHANGE");
-    console.log(view);
-  }, [view]);
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="container mt-5">
       <div className="row">

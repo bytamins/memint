@@ -2,50 +2,33 @@ import { useEffect, useState, useContext, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
-import { getFirestore, doc, getDoc, onSnapshot } from "firebase/firestore";
+import { useMoralis, useMoralisQuery } from "react-moralis";
+
 import { UserContext } from "../../providers/user";
 import img_placeholder from "../../assets/img_placeholder.png";
 
 import EditDay from "../../components/EditDay";
 import { DEFAULT_TITLE } from "../../utils/constants";
 import { TokenPreview, DayMeta, MetaContainer } from "./styled";
+import { dayObject } from "../../utils/format";
 const Day = () => {
   const [editing, setEditing] = useState(false);
-  const [day, setDay] = useState({
-    title: DEFAULT_TITLE,
-  });
-  const { account } = useContext(UserContext);
+  const { user } = useMoralis();
   const { timestamp } = useParams();
-  const tokenId = `${account}x${timestamp}`;
+  const tokenId = `${user.get("ethAddress")}x${timestamp}`;
 
-  async function getDay() {
-    const db = getFirestore();
+  const { data, error, isLoading } = useMoralisQuery("Day", (query) =>
+    query.equalTo("user", user).equalTo("tokenId", tokenId).limit(1)
+  );
 
-    const docRef = doc(db, "days", tokenId);
-    const docSnap = await getDoc(docRef);
-
-    const unsub = onSnapshot(doc(db, "days", tokenId), (doc) => {
-      setDay(doc.data());
-    });
-
-    if (docSnap.exists()) {
-      setDay(docSnap.data());
-    }
+  let day = {};
+  if (data[0]) {
+    day = dayObject(data[0]);
   }
 
-  useEffect(() => {
-    getDay();
-    return () => {
-      // unsub();
-    };
-  }, []);
-
-  console.log(day);
-  if (day.tokenId) {
-    console.log("HELLOOOO");
-  }
-
-  return (
+  return isLoading ? (
+    <h1>Loading...</h1>
+  ) : (
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-4">

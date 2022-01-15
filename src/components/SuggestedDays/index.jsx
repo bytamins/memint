@@ -11,7 +11,7 @@ import FeaturedDayCard from "../../components/FeaturedDayCard";
 
 const SuggestedDays = () => {
   const { user } = useContext(UserContext);
-
+  const birthdate = user.get("birthdate_unix");
   return (
     <div className="row mb-5">
       <div className="col-md-12">
@@ -33,11 +33,11 @@ const SuggestedDays = () => {
         <FeaturedDayCard
           title="Recent Birthday"
           description={`Mint an NFT for the day that you turned ${moment().diff(
-            moment(user.birthdate * 1000),
+            moment(birthdate * 1000),
             "years"
           )} years old.`}
-          link={`/day/${moment(user.birthdate * 1000)
-            .add(moment().diff(moment(user.birthdate * 1000), "years"), "years")
+          link={`/day/${moment(birthdate * 1000)
+            .add(moment().diff(moment(birthdate * 1000), "years"), "years")
             .unix()}`}
           color="#7858d7"
           icon={faBirthdayCake}
@@ -47,7 +47,7 @@ const SuggestedDays = () => {
         <FeaturedDayCard
           title="First Birthday"
           description="Add the day that you were born to the blockchain."
-          link={`/day/${moment(user.birthdate * 1000).unix()}`}
+          link={`/day/${moment(birthdate * 1000).unix()}`}
           color="#7858d7"
           icon={faBirthdayCake}
         />
