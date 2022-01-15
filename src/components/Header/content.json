@@ -1,0 +1,20 @@
+{
+  "pages": [
+    {
+      "path": "/dashboard",
+      "name": "Dashboard"
+    },
+    {
+      "path": "/calendar",
+      "name": "Calendar"
+    },
+    {
+      "path": "/minted",
+      "name": "Minted"
+    },
+    {
+      "path": "/profile",
+      "name": "Profile"
+    }
+  ]
+}

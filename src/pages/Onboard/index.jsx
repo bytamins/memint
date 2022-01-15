@@ -2,39 +2,45 @@ import { getFirestore, doc, setDoc } from "firebase/firestore";
 import moment from "moment";
 import { useContext, useState } from "react";
 import { UserContext } from "../../providers/user";
+import { useNavigate } from "react-router-dom";
+import InputField from "../../components/InputField";
+
 const Onboard = () => {
+  let navigate = useNavigate();
+
   const { getUser, account } = useContext(UserContext);
   const [birthdate, setBirthdate] = useState("");
   async function createUser() {
     const db = getFirestore();
-    await setDoc(doc(db, "users", account), {
+    await setDoc(doc(db, "accounts", account), {
       address: account,
       birthdate: moment(birthdate).unix(),
       birthdateLabel: birthdate,
     });
     await getUser();
+    navigate("/dashboard");
   }
   return (
     <div className="container mt-5">
       <div className="col-md-4 offset-md-4 text-center mt-5">
         <h1>Welcome!</h1>
+      </div>
+      <div className="col-md-4 offset-md-4 mt-5">
         <div className="mb-3">
-          <label htmlfor="exampleInputEmail1" className="form-label">
-            Birthdate
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            onChange={(ev) => setBirthdate(ev.target.value)}
+          <label className="form-label">Birthdate</label>
+          <InputField
+            placeholder="12/13/1991"
             value={birthdate}
-            id="exampleInputEmail1"
-            placeholder="12/13/91"
+            onChange={setBirthdate}
           />
           <div className="form-text">
-            Once you enter your birthdate, you can't change it.
+            Once you enter your birthdate, you can't change it!
           </div>
         </div>
-        <button onClick={createUser} type="button" className="btn btn-primary">
+        <button
+          onClick={createUser}
+          type="button"
+          className="btn btn-primary w-100">
           Go to Dashboard
         </button>
       </div>

@@ -1,26 +1,48 @@
 import { createContext, useEffect, useState } from "react";
-import { getFirestore } from "firebase/firestore";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
 const UserContext = createContext();
 const UserConsumer = UserContext.Consumer;
 
 const UserProvider = ({ children }) => {
+  const [loading, setLoading] = useState(true);
   const [account, setAccount] = useState("");
   const [user, setUser] = useState(null);
 
   async function getUser() {
     const db = getFirestore();
 
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("address", "==", account));
+    const docRef = doc(db, "accounts", account);
+    const docSnap = await getDoc(docRef);
 
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
-      setUser(doc.data());
-    });
+    if (docSnap.exists()) {
+      setUser(docSnap.data());
+    }
+  }
+
+  async function getAccount() {
+    const { ethereum } = window;
+    if (!ethereum) {
+      console.log("Make sure you have metamask installed!");
+      return;
+    } else {
+      console.log("Wallet exists! Ready to go.");
+    }
+    const accounts = await ethereum.request({ method: "eth_accounts" });
+    if (accounts.length !== 0) {
+      setAccount(accounts[0]);
+    } else {
+      console.log("No authorized account found.");
+    }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -28,11 +50,14 @@ const UserProvider = ({ children }) => {
     if (account) {
       console.log("ON ADDRESS CHANGE");
       getUser();
+    } else {
+      getAccount();
     }
   }, [account]);
   return (
     <UserContext.Provider
       value={{
+        loading,
         account,
         setAccount,
         getUser,

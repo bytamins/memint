@@ -1,7 +1,10 @@
+import { useEffect, useContext } from "react";
 import moment from "moment";
-import { useEffect } from "react";
+import { UserContext } from "../../providers/user";
+import { YEAR_FORMAT } from "../../utils/constants";
 
-const YearNav = ({ birthdate, view, setView }) => {
+const YearNav = ({ view, setView }) => {
+  const { user } = useContext(UserContext);
   const today = moment();
 
   useEffect(() => {
@@ -10,27 +13,27 @@ const YearNav = ({ birthdate, view, setView }) => {
 
   return (
     <ul className="nav nav-pills flex-column">
-      {[...Array(today.diff(moment(birthdate), "years") + 2).keys()].map(
-        (yearDiff) => (
-          <li className="nav-item" key={yearDiff}>
-            <a
-              className={`nav-link ${
-                view.year ===
-                  moment().subtract(yearDiff, "years").format("YYYY") &&
-                "active"
-              }`}
-              href="#top"
-              onClick={() =>
-                setView({
-                  ...view,
-                  year: moment().subtract(yearDiff, "years").format("YYYY"),
-                })
-              }>
-              {moment().subtract(yearDiff, "years").format("YYYY")}
-            </a>
-          </li>
-        )
-      )}
+      {[
+        ...Array(today.diff(moment(user.birthdate * 1000), "years") + 2).keys(),
+      ].map((yearDiff) => (
+        <li className="nav-item" key={yearDiff}>
+          <a
+            className={`nav-link ${
+              view.year ===
+                moment().subtract(yearDiff, "years").format(YEAR_FORMAT) &&
+              "active"
+            }`}
+            href="#top"
+            onClick={() =>
+              setView({
+                ...view,
+                year: moment().subtract(yearDiff, "years").format(YEAR_FORMAT),
+              })
+            }>
+            {moment().subtract(yearDiff, "years").format(YEAR_FORMAT)}
+          </a>
+        </li>
+      ))}
     </ul>
   );
 };

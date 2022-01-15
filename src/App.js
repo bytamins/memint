@@ -1,4 +1,6 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { UserConsumer } from "./providers/user";
 
@@ -10,29 +12,39 @@ import Dashboard from "./pages/Dashboard";
 import Day from "./pages/Day";
 import Onboard from "./pages/Onboard";
 import Profile from "./pages/Profile";
+import Calendar from "./pages/Calendar";
+import Minted from "./pages/Minted";
 
 function App() {
   return (
     <UserConsumer>
-      {(context) => (
-        <>
-          <Header address={context.account} />
-          {context.account && !context.user ? (
-            <Routes>
-              <Route path="/" element={<Home />} />
-            </Routes>
-          ) : (
-            <Routes>
-              {!context.address && <Route path="/*" element={<Onboard />} />}
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/day/:timestamp" element={<Day />} />
-            </Routes>
-          )}
-        </>
-      )}
+      {(context) =>
+        context.loading ? (
+          <h1>Loading...</h1>
+        ) : (
+          <>
+            <Header address={context.account} />
+            {context.account && !context.user ? (
+              <Routes>
+                <Route path="/onboard" element={<Onboard />} />
+                <Route path="/*" element={<Navigate to="onboard" />} />
+              </Routes>
+            ) : (
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/calendar" element={<Calendar />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/minted" element={<Minted />} />
+                <Route path="/day/:timestamp" element={<Day />} />
+                <Route path="/*" element={<Navigate to="/dashboard" />} />
+              </Routes>
+            )}
+            <ToastContainer />
+          </>
+        )
+      }
     </UserConsumer>
   );
 }
