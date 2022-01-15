@@ -7,6 +7,7 @@ import { UserContext } from "../../providers/user";
 import EditDay from "../../components/EditDay";
 import { DEFAULT_TITLE } from "../../utils/constants";
 const Day = () => {
+  const [editing, setEditing] = useState(false);
   const [day, setDay] = useState({});
   const { account } = useContext(UserContext);
   const { timestamp } = useParams();
@@ -27,27 +28,55 @@ const Day = () => {
     getDay();
   }, []);
 
+  console.log(day);
+  if (day.tokenId) {
+    console.log("HELLOOOO");
+  }
+
   return (
     <div className="container mt-5">
       <div className="row">
-        <div className="col-md-3"></div>
-        <div className="col-md-9">
+        <div className="col-md-4">
+          <div className="card">
+            <div className="card-header"></div>
+            <div className="card-body"></div>
+          </div>
+        </div>
+        <div className="col-md-8">
           <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                {moment(timestamp * 1000).format("MM/DD/YYYY")}
-              </h5>
-              <h6 className="card-subtitle mb-2 text-muted">
-                {day.title || DEFAULT_TITLE}
-              </h6>
-              <p className="card-text">{day.description}</p>
-              <a href="#link" className="card-link">
-                Card link
-              </a>
-              <a href="#link" className="card-link">
-                Another link
-              </a>
+            <div className="card-header">
+              {moment(timestamp * 1000).format("MMMM Do[,] YYYY")}
             </div>
+            {day.tokenId ? (
+              <div className="card-body">
+                <h5 className="card-title">
+                  {moment(timestamp * 1000).format("MM/DD/YYYY")}
+                </h5>
+                <h4 className="card-subtitle mb-2 text-muted">
+                  {day.title || DEFAULT_TITLE}
+                </h4>
+                <p className="card-text">{day.description}</p>
+                <a href="#link" className="card-link">
+                  Card link
+                </a>
+                <a href="#link" className="card-link">
+                  Another link
+                </a>
+              </div>
+            ) : (
+              <div className="card-body text-center p-5">
+                <h4 className="card-title">No details yet!</h4>
+                <p className="card-text">
+                  Add some more information about this day to make your NFT
+                  extra special.
+                </p>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setEditing(true)}>
+                  Add Details
+                </button>
+              </div>
+            )}
           </div>
           {day && <EditDay tokenId={tokenId} day={day} key={day} />}
         </div>

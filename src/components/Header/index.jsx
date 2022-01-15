@@ -8,12 +8,12 @@ const Header = ({ address }) => {
       <div className="container">
         <nav className="navbar navbar-expand-lg navbar-light">
           <Link className="navbar-brand" to="/">
-            🍬 MeMint
+            🍬 memint
           </Link>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <StyledLinks className="navbar-nav">
               {c.pages.map((page) => (
-                <li className="nav-item">
+                <li className="nav-item" key={page.path}>
                   <Link
                     className={`nav-link ${pathname === page.path && "active"}`}
                     to={page.path}>
