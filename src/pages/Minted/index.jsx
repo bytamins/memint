@@ -1,10 +1,19 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { useMoralis } from "react-moralis";
+import { useMoralis, useMoralisQuery } from "react-moralis";
+import DayCard from "../../components/DayCard";
+
+import PageTitle from "../../components/PageTitle";
 import { NFTPORT_API_KEY } from "../../utils/constants";
 
 const Minted = () => {
   const { user } = useMoralis();
+
+  const { data: days, isLoading } = useMoralisQuery("Day", (query) =>
+    query.equalTo("user", user).equalTo("minted", true).limit(100)
+  );
+
+  console.log(days);
 
   useEffect(() => {
     async function getMinted() {
@@ -21,7 +30,19 @@ const Minted = () => {
     }
     getMinted();
   }, [user]);
-  return <h1>Minted</h1>;
+  return (
+    <div className="container mt-5">
+      <PageTitle
+        title="Minted Days"
+        description="All of the days you've minted to the blockchain!"
+      />
+      <div className="row">
+        {days.map((day) => (
+          <DayCard dayRecord={day} col="col-md-3" />
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default Minted;

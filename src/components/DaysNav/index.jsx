@@ -15,8 +15,6 @@ const DaysNav = ({ view }) => {
     query.equalTo("user", user).limit(100)
   );
 
-  console.log(days);
-
   return isLoading ? (
     <h1>Loading...</h1>
   ) : (

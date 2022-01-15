@@ -6,6 +6,7 @@ import MonthNav from "../../components/MonthNav";
 import YearNav from "../../components/YearNav";
 import { YEAR_FORMAT, MONTH_FORMAT, DAY_FORMAT } from "../../utils/constants";
 import DaysNav from "../../components/DaysNav";
+import PageTitle from "../../components/PageTitle";
 
 const Calendar = () => {
   const { user } = useMoralis();
@@ -21,12 +22,10 @@ const Calendar = () => {
 
   return (
     <div className="container mt-5">
-      <div className="row">
-        <div className="col-md-4 offset-md-4 text-center mb-5">
-          <h1>Calendar</h1>
-          <hr />
-        </div>
-      </div>
+      <PageTitle
+        title="Calendar"
+        description="You can mint any day between now &amp; the day you were born."
+      />
       <div className="row">
         <div className="col-md-2">
           <h5>Years</h5>

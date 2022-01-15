@@ -1,3 +1,4 @@
+import PageTitle from "../../components/PageTitle";
 import SuggestedDays from "../../components/SuggestedDays";
 
 const Dashboard = ({ user }) => {
@@ -6,13 +7,10 @@ const Dashboard = ({ user }) => {
   }
   return (
     <div className="container mt-5">
-      <div className="row">
-        <div className="col-md-4 offset-md-4 text-center mb-5">
-          <h1>Dashboard</h1>
-          <p>You can mint any day of your past into an NFT!</p>
-          <hr />
-        </div>
-      </div>
+      <PageTitle
+        title="Dashboard"
+        description="You can mint any day of your past into an NFT!"
+      />
 
       <SuggestedDays />
 

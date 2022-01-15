@@ -1,7 +1,8 @@
-import moment from "moment";
 import { useContext, useState } from "react";
-import { UserContext } from "../../providers/user";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
+import { useMoralis } from "react-moralis";
+import { UserContext } from "../../providers/user";
 import InputField from "../../components/InputField";
 
 const Onboard = () => {
@@ -9,20 +10,19 @@ const Onboard = () => {
 
   const { user, refreshUser } = useContext(UserContext);
   const [birthdate, setBirthdate] = useState("");
+  const { setUserData, userError, isUserUpdating } = useMoralis();
 
   async function updateBirthdate() {
-    user.set("birthdate_unix", moment(birthdate).unix());
-    user.set("birthdate_label", birthdate);
-    await user.save();
+    await setUserData({
+      birthdate_unix: moment(birthdate).unix(),
+      birthdate_label: birthdate,
+    });
+
+    // user.set("birthdate_unix", moment(birthdate).unix());
+    // user.set("birthdate_label", birthdate);
+    // await user.save();
     await refreshUser();
 
-    // const db = getFirestore();
-    // await setDoc(doc(db, "accounts", account), {
-    //   address: account,
-    //   birthdate: moment(birthdate).unix(),
-    //   birthdateLabel: birthdate,
-    // });
-    // await getUser();
     navigate("/dashboard");
   }
   return (

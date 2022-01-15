@@ -1,12 +1,23 @@
 import { ByMoralis } from "react-moralis";
+import { StyledFooter, LeftColumn } from "./styled";
 
 const Footer = () => {
   return (
-    <div>
-      <ByMoralis width={300} />
-      <ByMoralis width={300} variant="dark" />
-      <ByMoralis width={300} variant="light" />
-    </div>
+    <StyledFooter>
+      <div className="row d-flex align-items-center">
+        <div className="col-md-6">
+          <span>
+            © 2021 memint &middot; a project by{" "}
+            <a href="https://www.bytamins.com" target="_blank" rel="noreferrer">
+              bytamins
+            </a>
+          </span>
+        </div>
+        <LeftColumn className="col-md-6 text-right">
+          <ByMoralis width={160} variant="light" />
+        </LeftColumn>
+      </div>
+    </StyledFooter>
   );
 };
 
