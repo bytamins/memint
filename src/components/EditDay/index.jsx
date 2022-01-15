@@ -1,30 +1,38 @@
-import { useEffect, useState, useContext } from "react";
-import { UserContext } from "../../providers/user";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import InputField from "../InputField";
 import ImageUpload from "../ImageUpload";
 
-const EditDay = ({ tokenId, day }) => {
-  const { account } = useContext(UserContext);
-  const [details, setDetails] = useState(day);
+const EditDay = ({ day }) => {
+  const [saving, setSaving] = useState(false);
+  const [details, setDetails] = useState(
+    day.id
+      ? {
+          id: day.id,
+          tokenId: day.get("tokenId"),
+          title: day.get("title"),
+          description: day.get("description"),
+          dayLabel: day.get("dayLabel"),
+          timestamp: day.get("timestamp"),
+        }
+      : {}
+  );
 
+  // update days object
   async function saveChanges() {
     try {
-      const db = getFirestore();
-
-      await setDoc(doc(db, "days", tokenId), {
-        ...details,
-        tokenId,
-        account,
-      });
+      setSaving(true);
+      day.set("image_url", details.image_url);
+      day.set("title", details.title);
+      day.set("description", details.description);
+      await day.save();
       toast.success("Your day was successfully saved!");
+      setSaving(false);
     } catch (err) {
+      setSaving(false);
       toast.error(err.message);
     }
   }
-
-  console.log(details);
 
   return (
     <div className="row">
@@ -39,30 +47,39 @@ const EditDay = ({ tokenId, day }) => {
         />
       </div>
       <div className="col-md-8">
-        <InputField
-          placeholder="Day Title"
-          value={details.title}
-          onChange={(val) =>
-            setDetails({
-              ...details,
-              title: val,
-            })
-          }
-        />
-        <textarea
-          className="form-control"
-          placeholder="Description of the day..."
-          value={details.description}
-          onChange={(ev) =>
-            setDetails({
-              ...details,
-              description: ev.target.value,
-            })
-          }></textarea>
-      </div>
-      <div className="col-md-12">
-        <button className="btn btn-primary" onClick={saveChanges}>
-          Save Changes
+        <div className="mb-3">
+          <label className="form-label">NFT Name</label>
+          <InputField
+            placeholder="Day Title"
+            value={details.title}
+            onChange={(val) =>
+              setDetails({
+                ...details,
+                title: val,
+              })
+            }
+          />
+          <div className="form-text">This is the Title of your NFT.</div>
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Description</label>
+          <textarea
+            className="form-control form-control-lg"
+            placeholder="Description of the day..."
+            value={details.description}
+            onChange={(ev) =>
+              setDetails({
+                ...details,
+                description: ev.target.value,
+              })
+            }></textarea>
+          <div className="form-text">This is the Title of your NFT.</div>
+        </div>
+        <hr />
+        <button
+          className={`btn btn-primary btn-lg w-100 ${saving && "disabled"}`}
+          onClick={saveChanges}>
+          {saving ? "Saving..." : "Save Changes"}
         </button>
       </div>
     </div>

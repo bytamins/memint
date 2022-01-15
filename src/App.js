@@ -23,8 +23,8 @@ function App() {
           <h1>Loading...</h1>
         ) : (
           <>
-            <Header address={context.account} />
-            {context.account && !context.user ? (
+            <Header user={context.user} />
+            {context.user && !context.user.get("birthdate_unix") ? (
               <Routes>
                 <Route path="/onboard" element={<Onboard />} />
                 <Route path="/*" element={<Navigate to="onboard" />} />
@@ -33,7 +33,10 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route
+                  path="/dashboard"
+                  element={<Dashboard user={context.user} />}
+                />
                 <Route path="/calendar" element={<Calendar />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/minted" element={<Minted />} />

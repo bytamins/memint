@@ -1,5 +1,3 @@
-import { ethers } from "ethers";
-
 const Login = () => {
   return (
     <div className="container mt-5">

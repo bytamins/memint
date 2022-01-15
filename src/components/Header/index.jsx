@@ -2,8 +2,9 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { Address, StyledHeader, StyledLinks } from "./styled";
 import c from "./content.json";
-const Header = ({ address }) => {
+const Header = ({ user }) => {
   const { pathname } = useLocation();
+  const address = user ? user.get("ethAddress") : "";
   return (
     <StyledHeader>
       <div className="container">

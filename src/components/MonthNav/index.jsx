@@ -1,7 +1,6 @@
 import moment from "moment";
 import { useEffect } from "react";
 import { YEAR_FORMAT } from "../../utils/constants";
-const MonthPill = () => null;
 
 const MonthNav = ({ view, setView }) => {
   const today = moment();

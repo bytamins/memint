@@ -1,35 +1,25 @@
 import moment from "moment";
-import { useEffect, useContext, useState } from "react";
+import { useMoralis, useMoralisQuery } from "react-moralis";
+
 import {
-  getFirestore,
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
-import { UserContext } from "../../providers/user";
-import { YEAR_FORMAT, MONTH_FORMAT } from "../../utils/constants";
+  YEAR_FORMAT,
+  MONTH_FORMAT,
+  DAY_LABEL_FORMAT,
+} from "../../utils/constants";
 import DayCard from "../DayCard";
 
 const DaysNav = ({ view }) => {
-  const { account } = useContext(UserContext);
-  const [days, setDays] = useState([]);
-  async function getDays() {
-    const db = getFirestore();
-    const daysRef = collection(db, "days");
+  const { user } = useMoralis();
 
-    // Create a query against the collection.
-    const q = query(daysRef, where("account", "==", account));
-    const querySnapshot = await getDocs(q);
-    const tempDays = [];
-    querySnapshot.forEach((doc) => tempDays.push(doc.data()));
-    setDays(tempDays);
-  }
-  useEffect(() => {
-    getDays();
-  }, []);
+  const { data: days, isLoading } = useMoralisQuery("Day", (query) =>
+    query.equalTo("user", user).limit(100)
+  );
+
   console.log(days);
-  return (
+
+  return isLoading ? (
+    <h1>Loading...</h1>
+  ) : (
     <div className="row">
       {[
         ...Array(
@@ -42,9 +32,11 @@ const DaysNav = ({ view }) => {
         const dayLabel = moment(
           `${view.month}/${day + 1}/${view.year}`,
           "MMMM/D/YYYY"
-        ).format("M/D/YY");
+        ).format(DAY_LABEL_FORMAT);
         const dayRecord = days.find(
-          (d) => d.tokenId === `${account}x${moment(dayLabel).unix()}`
+          (d) =>
+            d.get("tokenId") ===
+            `${user.get("ethAddress")}x${moment(dayLabel).unix()}`
         );
         return <DayCard dayRecord={dayRecord} dayLabel={dayLabel} key={day} />;
       })}
