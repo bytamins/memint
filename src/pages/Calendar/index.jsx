@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import moment from "moment";
-import { useMoralis, useMoralisQuery } from "react-moralis";
+import { useMoralis } from "react-moralis";
 
 import MonthNav from "../../components/MonthNav";
 import YearNav from "../../components/YearNav";

@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
 import { Card, Icon, StyledLink } from "./styled";
 const FeaturedDayCard = ({ title, description, icon, color, link }) => {
   return (

@@ -25,7 +25,7 @@ const UserProvider = ({ children }) => {
       setUser(MoralisUser);
     }
     setLoading(false);
-  }, [isAuthenticated]);
+  }, [isAuthenticated, MoralisUser]);
 
   return (
     <UserContext.Provider

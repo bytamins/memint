@@ -1,33 +1,38 @@
-import { useEffect, useState, useContext } from "react";
-import { useMoralis, useNewMoralisObject } from "react-moralis";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import InputField from "../InputField";
 import ImageUpload from "../ImageUpload";
-import moment from "moment";
-import { DAY_LABEL_FORMAT } from "../../utils/constants";
 
-const EditDay = ({ tokenId, day, timestamp }) => {
-  const { user } = useMoralis();
-
-  const [details, setDetails] = useState(day);
-  const { isSaving, error, save } = useNewMoralisObject("Day");
+const EditDay = ({ day }) => {
+  const [saving, setSaving] = useState(false);
+  const [details, setDetails] = useState(
+    day.id
+      ? {
+          id: day.id,
+          tokenId: day.get("tokenId"),
+          title: day.get("title"),
+          description: day.get("description"),
+          dayLabel: day.get("dayLabel"),
+          timestamp: day.get("timestamp"),
+        }
+      : {}
+  );
 
   // update days object
   async function saveChanges() {
     try {
-      save({
-        user,
-        tokenId,
-        timestamp,
-        dayLabel: moment(timestamp * 1000).format(DAY_LABEL_FORMAT),
-      });
+      setSaving(true);
+      day.set("image_url", details.image_url);
+      day.set("title", details.title);
+      day.set("description", details.description);
+      await day.save();
       toast.success("Your day was successfully saved!");
+      setSaving(false);
     } catch (err) {
+      setSaving(false);
       toast.error(err.message);
     }
   }
-
-  console.log(details);
 
   return (
     <div className="row">
@@ -59,7 +64,7 @@ const EditDay = ({ tokenId, day, timestamp }) => {
         <div className="mb-3">
           <label className="form-label">Description</label>
           <textarea
-            className="form-control"
+            className="form-control form-control-lg"
             placeholder="Description of the day..."
             value={details.description}
             onChange={(ev) =>
@@ -71,8 +76,10 @@ const EditDay = ({ tokenId, day, timestamp }) => {
           <div className="form-text">This is the Title of your NFT.</div>
         </div>
         <hr />
-        <button className="btn btn-primary btn-lg w-100" onClick={saveChanges}>
-          Save Changes
+        <button
+          className={`btn btn-primary btn-lg w-100 ${saving && "disabled"}`}
+          onClick={saveChanges}>
+          {saving ? "Saving..." : "Save Changes"}
         </button>
       </div>
     </div>

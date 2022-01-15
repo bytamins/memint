@@ -1,8 +1,7 @@
-import { useEffect, useContext } from "react";
+import { useEffect } from "react";
 import moment from "moment";
-import { useMoralis, useMoralisQuery } from "react-moralis";
+import { useMoralis } from "react-moralis";
 
-import { UserContext } from "../../providers/user";
 import { YEAR_FORMAT } from "../../utils/constants";
 
 const YearNav = ({ view, setView }) => {

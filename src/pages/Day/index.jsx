@@ -1,30 +1,53 @@
-import { useEffect, useState, useContext, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+import { toast } from "react-toastify";
+import {
+  useMoralis,
+  useMoralisQuery,
+  useNewMoralisObject,
+} from "react-moralis";
+import ReactJson from "react-json-view";
 
-import { useMoralis, useMoralisQuery } from "react-moralis";
-
-import { UserContext } from "../../providers/user";
 import img_placeholder from "../../assets/img_placeholder.png";
 
 import EditDay from "../../components/EditDay";
-import { DEFAULT_TITLE } from "../../utils/constants";
+import { DAY_LABEL_FORMAT } from "../../utils/constants";
 import { TokenPreview, DayMeta, MetaContainer } from "./styled";
-import { dayObject } from "../../utils/format";
+import MintArea from "../../components/MintArea";
 const Day = () => {
-  const [editing, setEditing] = useState(false);
   const { user } = useMoralis();
   const { timestamp } = useParams();
   const tokenId = `${user.get("ethAddress")}x${timestamp}`;
 
-  const { data, error, isLoading } = useMoralisQuery("Day", (query) =>
-    query.equalTo("user", user).equalTo("tokenId", tokenId).limit(1)
+  const { isSaving, save } = useNewMoralisObject("Day");
+
+  // update days object
+  async function createDay() {
+    try {
+      const response = save({
+        user,
+        tokenId,
+        timestamp,
+        dayLabel: moment(timestamp * 1000).format(DAY_LABEL_FORMAT),
+      });
+      console.log(response);
+      toast.success("Your day was successfully saved!");
+    } catch (err) {
+      toast.error(err.message);
+    }
+  }
+
+  const { data, isLoading } = useMoralisQuery(
+    "Day",
+    (query) => query.equalTo("user", user).equalTo("tokenId", tokenId).limit(1),
+    [1],
+    {
+      live: true,
+    }
   );
 
-  let day = {};
-  if (data[0]) {
-    day = dayObject(data[0]);
-  }
+  let day = data[0] || {};
+  console.log(day);
 
   return isLoading ? (
     <h1>Loading...</h1>
@@ -34,14 +57,22 @@ const Day = () => {
         <div className="col-md-4">
           <TokenPreview className="card">
             <img
-              src={day.image_url || img_placeholder}
+              src={
+                day.id
+                  ? day.get("image_url") || img_placeholder
+                  : img_placeholder
+              }
               className="card-img-top"
               alt="..."
             />
             <MetaContainer>
               <DayMeta>
-                <h4 className="card-title mb-3">{day.title}</h4>
-                <p className="card-description">{day.description}</p>
+                <h4 className="card-title mb-3">
+                  {day.id ? day.get("title") : ""}
+                </h4>
+                <p className="card-description">
+                  {day.id ? day.get("description") : ""}
+                </p>
               </DayMeta>
             </MetaContainer>
           </TokenPreview>
@@ -58,7 +89,7 @@ const Day = () => {
             <div className="card-header">
               {moment(timestamp * 1000).format("MMMM Do[,] YYYY")}
             </div>
-            {day.tokenId || editing ? (
+            {day.id ? (
               <div className="card-body">
                 {day && (
                   <EditDay
@@ -77,13 +108,27 @@ const Day = () => {
                   extra special.
                 </p>
                 <button
-                  className="btn btn-primary"
-                  onClick={() => setEditing(true)}>
-                  Add Details
+                  className={`btn btn-primary ${isSaving && "disabled"}`}
+                  onClick={createDay}>
+                  {isSaving ? "Loading..." : "Add Details"}
                 </button>
               </div>
             )}
           </div>
+          <div className="card mb-4">
+            <div className="card-body">
+              {day.id && (
+                <ReactJson
+                  src={{
+                    name: day.get("title"),
+                    description: day.get("description"),
+                    file_url: day.get("image_url"),
+                  }}
+                />
+              )}
+            </div>
+          </div>
+          {day.id && <MintArea day={day} />}
         </div>
       </div>
     </div>
