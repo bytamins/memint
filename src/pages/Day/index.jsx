@@ -2,7 +2,7 @@ import { useEffect, useState, useContext, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { UserContext } from "../../providers/user";
 import img_placeholder from "../../assets/img_placeholder.png";
 
@@ -24,6 +24,10 @@ const Day = () => {
     const docRef = doc(db, "days", tokenId);
     const docSnap = await getDoc(docRef);
 
+    const unsub = onSnapshot(doc(db, "days", tokenId), (doc) => {
+      setDay(doc.data());
+    });
+
     if (docSnap.exists()) {
       setDay(docSnap.data());
     }
@@ -31,6 +35,9 @@ const Day = () => {
 
   useEffect(() => {
     getDay();
+    return () => {
+      // unsub();
+    };
   }, []);
 
   console.log(day);
@@ -41,13 +48,6 @@ const Day = () => {
   return (
     <div className="container mt-5">
       <div className="row">
-        <div className="col-md-12">
-          <div className="alert alert-primary" role="alert">
-            You can make changes to this day until you mint it!
-          </div>
-        </div>
-      </div>
-      <div className="row">
         <div className="col-md-4">
           <TokenPreview className="card">
             <img
@@ -57,19 +57,34 @@ const Day = () => {
             />
             <MetaContainer>
               <DayMeta>
-                <h4>{day.title}</h4>
+                <h4 className="card-title mb-3">{day.title}</h4>
+                <p className="card-description">{day.description}</p>
               </DayMeta>
             </MetaContainer>
           </TokenPreview>
         </div>
         <div className="col-md-8">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="alert alert-primary" role="alert">
+                You can make changes to this day until you mint it!
+              </div>
+            </div>
+          </div>
           <div className="card mb-4">
             <div className="card-header">
               {moment(timestamp * 1000).format("MMMM Do[,] YYYY")}
             </div>
             {day.tokenId || editing ? (
               <div className="card-body">
-                {day && <EditDay tokenId={tokenId} day={day} key={day} />}
+                {day && (
+                  <EditDay
+                    tokenId={tokenId}
+                    day={day}
+                    key={day}
+                    timestamp={timestamp}
+                  />
+                )}
               </div>
             ) : (
               <div className="card-body text-center p-5">

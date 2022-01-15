@@ -4,8 +4,10 @@ import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import InputField from "../InputField";
 import ImageUpload from "../ImageUpload";
+import moment from "moment";
+import { DAY_LABEL_FORMAT } from "../../utils/constants";
 
-const EditDay = ({ tokenId, day }) => {
+const EditDay = ({ tokenId, day, timestamp }) => {
   const { account } = useContext(UserContext);
   const [details, setDetails] = useState(day);
 
@@ -17,6 +19,8 @@ const EditDay = ({ tokenId, day }) => {
         ...details,
         tokenId,
         account,
+        timestamp,
+        dayLabel: moment(timestamp * 1000).format(DAY_LABEL_FORMAT),
       });
       toast.success("Your day was successfully saved!");
     } catch (err) {
@@ -39,29 +43,36 @@ const EditDay = ({ tokenId, day }) => {
         />
       </div>
       <div className="col-md-8">
-        <InputField
-          placeholder="Day Title"
-          value={details.title}
-          onChange={(val) =>
-            setDetails({
-              ...details,
-              title: val,
-            })
-          }
-        />
-        <textarea
-          className="form-control"
-          placeholder="Description of the day..."
-          value={details.description}
-          onChange={(ev) =>
-            setDetails({
-              ...details,
-              description: ev.target.value,
-            })
-          }></textarea>
-      </div>
-      <div className="col-md-12">
-        <button className="btn btn-primary" onClick={saveChanges}>
+        <div className="mb-3">
+          <label className="form-label">NFT Name</label>
+          <InputField
+            placeholder="Day Title"
+            value={details.title}
+            onChange={(val) =>
+              setDetails({
+                ...details,
+                title: val,
+              })
+            }
+          />
+          <div className="form-text">This is the Title of your NFT.</div>
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Description</label>
+          <textarea
+            className="form-control"
+            placeholder="Description of the day..."
+            value={details.description}
+            onChange={(ev) =>
+              setDetails({
+                ...details,
+                description: ev.target.value,
+              })
+            }></textarea>
+          <div className="form-text">This is the Title of your NFT.</div>
+        </div>
+        <hr />
+        <button className="btn btn-primary btn-lg w-100" onClick={saveChanges}>
           Save Changes
         </button>
       </div>

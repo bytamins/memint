@@ -8,7 +8,11 @@ import {
   where,
 } from "firebase/firestore";
 import { UserContext } from "../../providers/user";
-import { YEAR_FORMAT, MONTH_FORMAT } from "../../utils/constants";
+import {
+  YEAR_FORMAT,
+  MONTH_FORMAT,
+  DAY_LABEL_FORMAT,
+} from "../../utils/constants";
 import DayCard from "../DayCard";
 
 const DaysNav = ({ view }) => {
@@ -42,7 +46,7 @@ const DaysNav = ({ view }) => {
         const dayLabel = moment(
           `${view.month}/${day + 1}/${view.year}`,
           "MMMM/D/YYYY"
-        ).format("M/D/YY");
+        ).format(DAY_LABEL_FORMAT);
         const dayRecord = days.find(
           (d) => d.tokenId === `${account}x${moment(dayLabel).unix()}`
         );

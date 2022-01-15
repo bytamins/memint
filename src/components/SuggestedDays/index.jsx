@@ -24,7 +24,7 @@ const SuggestedDays = () => {
         <FeaturedDayCard
           title={`Today (${moment().format("M/D/YY")})`}
           description="Celebrate your first day on memint with an NFT!"
-          link={`/day/${moment().unix()}`}
+          link={`/day/${moment().startOf("day").unix()}`}
           color="#ea643f"
           icon={faCalendarCheck}
         />
