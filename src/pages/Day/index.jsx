@@ -1,14 +1,19 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { UserContext } from "../../providers/user";
+import img_placeholder from "../../assets/img_placeholder.png";
 
 import EditDay from "../../components/EditDay";
 import { DEFAULT_TITLE } from "../../utils/constants";
+import { TokenPreview, DayMeta, MetaContainer } from "./styled";
 const Day = () => {
   const [editing, setEditing] = useState(false);
-  const [day, setDay] = useState({});
+  const [day, setDay] = useState({
+    title: DEFAULT_TITLE,
+  });
   const { account } = useContext(UserContext);
   const { timestamp } = useParams();
   const tokenId = `${account}x${timestamp}`;
@@ -36,32 +41,35 @@ const Day = () => {
   return (
     <div className="container mt-5">
       <div className="row">
-        <div className="col-md-4">
-          <div className="card">
-            <div className="card-header"></div>
-            <div className="card-body"></div>
+        <div className="col-md-12">
+          <div className="alert alert-primary" role="alert">
+            You can make changes to this day until you mint it!
           </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-4">
+          <TokenPreview className="card">
+            <img
+              src={day.image_url || img_placeholder}
+              className="card-img-top"
+              alt="..."
+            />
+            <MetaContainer>
+              <DayMeta>
+                <h4>{day.title}</h4>
+              </DayMeta>
+            </MetaContainer>
+          </TokenPreview>
         </div>
         <div className="col-md-8">
           <div className="card mb-4">
             <div className="card-header">
               {moment(timestamp * 1000).format("MMMM Do[,] YYYY")}
             </div>
-            {day.tokenId ? (
+            {day.tokenId || editing ? (
               <div className="card-body">
-                <h5 className="card-title">
-                  {moment(timestamp * 1000).format("MM/DD/YYYY")}
-                </h5>
-                <h4 className="card-subtitle mb-2 text-muted">
-                  {day.title || DEFAULT_TITLE}
-                </h4>
-                <p className="card-text">{day.description}</p>
-                <a href="#link" className="card-link">
-                  Card link
-                </a>
-                <a href="#link" className="card-link">
-                  Another link
-                </a>
+                {day && <EditDay tokenId={tokenId} day={day} key={day} />}
               </div>
             ) : (
               <div className="card-body text-center p-5">
@@ -78,7 +86,6 @@ const Day = () => {
               </div>
             )}
           </div>
-          {day && <EditDay tokenId={tokenId} day={day} key={day} />}
         </div>
       </div>
     </div>

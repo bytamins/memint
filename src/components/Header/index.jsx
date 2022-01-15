@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import logo from "../../assets/logo.png";
 import { Address, StyledHeader, StyledLinks } from "./styled";
 import c from "./content.json";
 const Header = ({ address }) => {
@@ -8,7 +9,8 @@ const Header = ({ address }) => {
       <div className="container">
         <nav className="navbar navbar-expand-lg navbar-light">
           <Link className="navbar-brand" to="/">
-            🍬 memint
+            {/* 🍬 memint */}
+            <img src={logo} alt="memint logo" height="28" />
           </Link>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <StyledLinks className="navbar-nav">

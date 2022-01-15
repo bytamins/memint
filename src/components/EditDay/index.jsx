@@ -3,6 +3,7 @@ import { UserContext } from "../../providers/user";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import InputField from "../InputField";
+import ImageUpload from "../ImageUpload";
 
 const EditDay = ({ tokenId, day }) => {
   const { account } = useContext(UserContext);
@@ -26,8 +27,18 @@ const EditDay = ({ tokenId, day }) => {
   console.log(details);
 
   return (
-    <div className="card">
-      <div className="card-body">
+    <div className="row">
+      <div className="col-md-4">
+        <ImageUpload
+          onSuccess={(image_url) =>
+            setDetails({
+              ...details,
+              image_url,
+            })
+          }
+        />
+      </div>
+      <div className="col-md-8">
         <InputField
           placeholder="Day Title"
           value={details.title}
@@ -48,6 +59,8 @@ const EditDay = ({ tokenId, day }) => {
               description: ev.target.value,
             })
           }></textarea>
+      </div>
+      <div className="col-md-12">
         <button className="btn btn-primary" onClick={saveChanges}>
           Save Changes
         </button>

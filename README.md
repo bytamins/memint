@@ -1,3 +1,32 @@
+# Setup App
+
+## Deploy Contract via NFTPort
+
+```
+curl --request POST \
+  --url https://api.nftport.xyz/v0/contracts \
+  --header 'Authorization: Your API key' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "chain": "polygon",
+  "name": "memint",
+  "symbol": "MMNT",
+  "owner_address": "0x5A78a333311EE16a8d6287B8c54A66033917F672",
+  "metadata_updatable": false
+}'
+```
+
+## Get Contract Address
+
+Use transaction hash from previous request.
+
+```
+curl --request GET \
+  --url 'https://api.nftport.xyz/v0/contracts/transaction_hash?chain=polygon' \
+  --header 'Authorization: Your API key' \
+  --header 'Content-Type: application/json'
+```
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

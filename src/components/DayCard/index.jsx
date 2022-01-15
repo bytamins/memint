@@ -6,7 +6,9 @@ const DayCard = ({ dayLabel, dayRecord }) => {
   return (
     <div className="col-md-4">
       <div className={`card ${dayRecord.tokenId && `border-primary`} mb-4`}>
-        {/* <img src="..." className="card-img-top" alt="..." /> */}
+        {dayRecord.image_url && (
+          <img src={dayRecord.image_url} className="card-img-top" alt="..." />
+        )}
         <div className="card-body">
           <h5 className="card-title">{dayLabel}</h5>
           <p className="card-text text-muted">{dayRecord.title}</p>
