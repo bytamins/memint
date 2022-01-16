@@ -4,10 +4,21 @@ const Home = () => {
   return (
     <div className="container mt-5">
       <div className="row">
+        <div className="col-md-6">
+          <h1>NFTS</h1>
+          <h5>for your everyday life.</h5>
+          <MetamaskButton />
+        </div>
+        <div className="col-md-6">
+          <p>Collage</p>
+        </div>
         <div className="col-md-12 text-center">
           <h1>Welcome to memint!</h1>
           <h5>Mint Moments</h5>
-          <MetamaskButton />
+          <p>
+            Why should artists/developers/entrepreneurs have all of the fun? All
+            your need is a memory &amp; a photo.
+          </p>
         </div>
       </div>
     </div>

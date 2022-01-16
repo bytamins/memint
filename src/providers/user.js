@@ -11,6 +11,7 @@ const UserProvider = ({ children }) => {
     isAuthenticated,
     user: MoralisUser,
     refetchUserData,
+    isInitialized,
     logout,
   } = useMoralis();
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,13 @@ const UserProvider = ({ children }) => {
   }, [isAuthenticated, MoralisUser]);
 
   console.log(user);
+
+  useEffect(() => {
+    if (isInitialized) {
+      Moralis.initPlugins();
+      Moralis.enableWeb3();
+    }
+  }, [isInitialized]);
 
   return (
     <UserContext.Provider

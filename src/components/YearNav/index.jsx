@@ -14,7 +14,7 @@ const YearNav = ({ view, setView }) => {
   }, [view]);
 
   return (
-    <ul className="nav nav-pills flex-column">
+    <ul className="nav nav-pills flex-column mb-4">
       {[
         ...Array(
           today.diff(moment(user.get("birthdate_unix") * 1000), "years") + 2

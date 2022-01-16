@@ -3,6 +3,7 @@ import moment from "moment";
 import { DEFAULT_TITLE } from "../../utils/constants";
 
 const DayCard = ({ dayLabel, dayRecord, col }) => {
+  if (moment(dayLabel).unix() > moment().unix()) return null;
   return dayRecord.id ? (
     <div className={col}>
       <div
@@ -48,10 +49,12 @@ const DayCard = ({ dayLabel, dayRecord, col }) => {
       <div className={`card mb-4`}>
         <div className="card-body">
           <div className="row d-flex align-items-center">
-            <div className="col-md-5">
+            <div className="col-md-12">
               <h5 className="card-title mb-0">{dayLabel}</h5>
             </div>
-            <div className="col-md-7">
+          </div>
+          <div className="row mt-3">
+            <div className="col-md-12">
               <Link
                 to={`/day/${moment(dayLabel).unix()}`}
                 className="btn btn-secondary w-100">
