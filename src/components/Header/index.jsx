@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import { useMoralis } from "react-moralis";
 import logo from "../../assets/logo.png";
-import rinkeby from "../../assets/rinkeby.png";
-import polygon from "../../assets/polygon.png";
+// import rinkeby from "../../assets/rinkeby.png";
+// import polygon from "../../assets/polygon.png";
 import {
   Address,
   AddressLink,
-  NetworkButton,
+  // NetworkButton,
   StyledHeader,
   StyledLinks,
 } from "./styled";
