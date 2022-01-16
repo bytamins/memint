@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import { Address, StyledHeader, StyledLinks } from "./styled";
+import { Address, AddressLink, StyledHeader, StyledLinks } from "./styled";
 import c from "./content.json";
 const Header = ({ user }) => {
   const { pathname } = useLocation();
@@ -27,9 +27,11 @@ const Header = ({ user }) => {
             </StyledLinks>
             <div className="d-flex align-items-center">
               {address ? (
-                <Address>{`${address.substring(0, 6)}...${address.substring(
-                  address.length - 4
-                )}`}</Address>
+                <AddressLink to="/profile">
+                  <Address>{`${address.substring(0, 6)}...${address.substring(
+                    address.length - 4
+                  )}`}</Address>
+                </AddressLink>
               ) : (
                 <Address>Not Connected</Address>
               )}

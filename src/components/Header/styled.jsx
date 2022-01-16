@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const StyledHeader = styled.div`
@@ -16,4 +17,9 @@ export const Address = styled.div`
   border-radius: 40px;
   padding: 10px 20px;
   margin-right: 15px;
+`;
+
+export const AddressLink = styled(Link)`
+  text-decoration: none;
+  color: black;
 `;
