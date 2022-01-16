@@ -9,6 +9,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import MetamaskButton from "../../components/MetamaskButton";
+import {
+  MainHeader,
+  CallOutSection,
+  CallOutText,
+  SecondaryHeader,
+  CallOutContainer,
+} from "./styled";
 
 const ICON_SIZE = "2x";
 
@@ -17,26 +24,11 @@ const Home = () => {
     <>
       {" "}
       <div className="container mt-5">
-        <div className="row d-flex align-items-center">
+        <div className="row d-flex align-items-center mb-5">
           <div className="col-md-4">
-            <h1
-              style={{
-                fontSize: "8rem",
-                fontWeight: "bold",
-                marginBottom: "0px",
-                lineHeight: "80%",
-              }}>
-              NFTs
-            </h1>
-            <h5
-              style={{
-                fontSize: "2rem",
-                fontWeight: "bold",
-                marginBottom: "20px",
-              }}>
-              of your everyday life.
-            </h5>
-            <div className="row">
+            <MainHeader>NFTs</MainHeader>
+            <SecondaryHeader>of your everyday life.</SecondaryHeader>
+            <div className="row mt-5">
               <div className="col-md-2">
                 <FontAwesomeIcon icon={faUmbrellaBeach} size={ICON_SIZE} />
               </div>
@@ -68,37 +60,73 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div
-        className="row d-flex align-items-end mt-5"
-        style={{
-          fontSize: "3rem",
-          background: "#70baa0",
-          padding: "20px 0px",
-        }}>
-        <div className="col-md-2 offset-md-1">
-          <h5
-            style={{
-              fontSize: "3rem",
-            }}>
-            Only
-          </h5>
+      <CallOutSection>
+        <div className="container">
+          <CallOutContainer className="col-md-10 offset-md-1">
+            <div className="row d-flex align-items-end">
+              <div className="col-md-2">
+                <CallOutText>Only</CallOutText>
+              </div>
+              <div className="col-md-2">
+                <CallOutText faded={true}>
+                  <s>artists</s>
+                </CallOutText>
+                <CallOutText faded={true}>
+                  <s>developers</s>
+                </CallOutText>
+                <CallOutText faded={true}>
+                  <s>entrepreneurs</s>
+                </CallOutText>
+                <CallOutText>
+                  <strong>you</strong>
+                </CallOutText>
+              </div>
+              <div className="col-md-8">
+                <CallOutText>can create these NFTs.</CallOutText>
+              </div>
+            </div>
+          </CallOutContainer>
         </div>
-        <div className="col-md-3">
-          <h5>
-            <s>artists</s>
-          </h5>
-          <h5>
-            <s>developers</s>
-          </h5>
-          <h5>
-            <s>entrepreneurs</s>
-          </h5>
-          <h5>you</h5>
+      </CallOutSection>
+      <section className="mb-5">
+        <div className="container mt-5">
+          <div className="row">
+            <div className="col-md-4">
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Dynamic Dates</h4>
+                  <p className="card-body">
+                    We can customize your suggested NFTs based off your
+                    birthdate. More customization coming soon!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Multi-chain Minting</h4>
+                  <p className="card-body">
+                    You can currently mint NFTs on either the Polygon network or
+                    the Rinkeby test network.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Earn Money</h4>
+                  <p className="card-body">
+                    You can create sell orders for the OpenSea marketplace
+                    directly within memint!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="col-md-5">
-          <h5>can create these NFTs.</h5>
-        </div>
-      </div>
+      </section>
     </>
   );
 };

@@ -21,6 +21,8 @@ import Calendar from "./pages/Calendar";
 import Minted from "./pages/Minted";
 import MintedDay from "./pages/MintedDay";
 import LoadingIcon from "./components/LoadingIcon";
+import Features from "./pages/Public/Features";
+
 import Roadmap from "./pages/Public/Roadmap";
 import { NetworkConsumer } from "./utils/networkProvider";
 
@@ -71,6 +73,7 @@ function App() {
               ) : (
                 <Routes>
                   <Route path="/onboard" element={<Onboard />} />
+                  <Route path="/features" element={<Features />} />
                   <Route path="/roadmap" element={<Roadmap />} />
                   <Route path="/*" element={<Navigate to="onboard" />} />
                 </Routes>
