@@ -23,13 +23,12 @@ const Day = () => {
   // update days object
   async function createDay() {
     try {
-      const response = save({
+      save({
         user,
         tokenId,
         timestamp,
         dayLabel: moment(timestamp * 1000).format(DAY_LABEL_FORMAT),
       });
-      console.log(response);
       toast.success("Your day is ready to be edited!");
     } catch (err) {
       toast.error(err.message);
@@ -46,7 +45,6 @@ const Day = () => {
   );
 
   let day = data[0] || {};
-  console.log(day);
 
   return isLoading ? (
     <LoadingIcon />

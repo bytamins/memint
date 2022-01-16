@@ -3,8 +3,8 @@ import { useMoralis } from "react-moralis";
 import { useNavigate } from "react-router-dom";
 
 import logo from "../../assets/logo.png";
-// import rinkeby from "../../assets/rinkeby.png";
-// import polygon from "../../assets/polygon.png";
+import rinkeby from "../../assets/rinkeby.png";
+import polygon from "../../assets/polygon.png";
 import {
   Address,
   AddressLink,
@@ -13,7 +13,11 @@ import {
   StyledLinks,
 } from "./styled";
 import c from "./content.json";
-const Header = () => {
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+const Header = ({ network, setNetwork }) => {
   let navigate = useNavigate();
 
   const { pathname } = useLocation();
@@ -67,19 +71,21 @@ const Header = () => {
               </StyledLinks>
             )}
             <div className="d-flex align-items-center">
-              {/* <NetworkButton
-                onClick={() =>
-                  setNetwork(network === "Polygon" ? "Rinkeby" : "Polygon")
-                }>
-                <Address>
-                  <img
-                    src={network === "Polygon" ? polygon : rinkeby}
-                    alt="Network"
-                    height="16"
-                  />
-                  {network}
-                </Address>
-              </NetworkButton> */}
+              {user && (
+                <NetworkButton
+                  onClick={() =>
+                    setNetwork(network === "polygon" ? "rinkeby" : "polygon")
+                  }>
+                  <Address>
+                    <img
+                      src={network === "polygon" ? polygon : rinkeby}
+                      alt="Network"
+                      height="16"
+                    />
+                    {capitalizeFirstLetter(network)}
+                  </Address>
+                </NetworkButton>
+              )}
               {address ? (
                 <AddressLink to="/profile">
                   <Address>{`${address.substring(0, 6)}...${address.substring(

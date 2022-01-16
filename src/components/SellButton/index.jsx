@@ -8,7 +8,7 @@ const SellButton = ({ asset }) => {
   const { user } = useMoralis();
   async function sellOrder() {
     try {
-      const response = await Moralis.Plugins.opensea.createSellOrder({
+      await Moralis.Plugins.opensea.createSellOrder({
         network: "testnet",
         tokenAddress,
         tokenId,
@@ -17,7 +17,6 @@ const SellButton = ({ asset }) => {
         startAmount: price,
         endAmount: price,
       });
-      console.log(response);
     } catch (err) {
       console.error(err);
     }

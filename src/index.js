@@ -6,6 +6,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 import { MoralisProvider } from "react-moralis";
 
+import { NetworkProvider } from "./utils/networkProvider";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 
@@ -15,9 +16,11 @@ const appId = "LZEWPr567NGoaggVc7w8IYTEHtPiiZOHqR0efKUe";
 ReactDOM.render(
   <React.StrictMode>
     <MoralisProvider appId={appId} serverUrl={serverUrl}>
-      <Router>
-        <App />
-      </Router>
+      <NetworkProvider>
+        <Router>
+          <App />
+        </Router>
+      </NetworkProvider>
     </MoralisProvider>
   </React.StrictMode>,
   document.getElementById("root")

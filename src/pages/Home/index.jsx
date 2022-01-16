@@ -16,7 +16,26 @@ const Home = () => {
           <MetamaskButton />
         </div>
         <div className="col-md-6">
-          <p>Collage</p>
+          <div className="row d-flex align-items-end">
+            <div className="col-md-3">
+              <h5>Only</h5>
+            </div>
+            <div className="col-md-3">
+              <h5>
+                <s>artists</s>
+              </h5>
+              <h5>
+                <s>developers</s>
+              </h5>
+              <h5>
+                <s>entrepreneurs</s>
+              </h5>
+              <h5>you</h5>
+            </div>
+            <div className="col-md-6">
+              <h5>can create these NFTs.</h5>
+            </div>
+          </div>
         </div>
         <div className="col-md-12 text-center">
           <h1>Welcome to memint!</h1>

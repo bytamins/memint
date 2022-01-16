@@ -1,16 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import moment from "moment";
 import { toast } from "react-toastify";
 import { useMoralis } from "react-moralis";
-import {
-  CHAIN,
-  NFTPORT_API_KEY,
-  RINKEBY_CONTRACT,
-  YEAR_FORMAT,
-} from "../../utils/constants";
+import { NFTPORT_API_KEY, YEAR_FORMAT } from "../../utils/constants";
 import { ButtonContainer } from "./styled";
+import { NetworkContext } from "../../utils/networkProvider";
 
 const method = "POST";
 const headers = {
@@ -19,6 +15,7 @@ const headers = {
 };
 
 const MintArea = ({ day }) => {
+  const { network, contactAddress } = useContext(NetworkContext);
   let navigate = useNavigate();
 
   const { user } = useMoralis();
@@ -43,12 +40,6 @@ const MintArea = ({ day }) => {
   const dayLabel = day.get("dayLabel");
 
   async function mint() {
-    console.log([
-      { trait_type: "Year", value: moment(dayLabel).format(YEAR_FORMAT) },
-      { trait_type: "Month", value: moment(dayLabel).format("MMMM") },
-      { trait_type: "Day", value: moment(dayLabel).format("DD") },
-      { trait_type: "Week Day", value: moment(dayLabel).format("dddd") },
-    ]);
     try {
       const { data } = await axios.request({
         method,
@@ -77,8 +68,8 @@ const MintArea = ({ day }) => {
         url: "https://api.nftport.xyz/v0/mints/customizable",
         headers,
         data: {
-          chain: CHAIN,
-          contract_address: RINKEBY_CONTRACT,
+          chain: network,
+          contract_address: contactAddress,
           metadata_uri,
           mint_to_address: user.get("ethAddress"),
         },

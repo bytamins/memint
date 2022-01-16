@@ -1,84 +1,110 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Moralis from "moralis";
-import { CHAIN, NFTPORT_API_KEY } from "../../utils/constants";
+import { NFTPORT_API_KEY } from "../../utils/constants";
 import SellButton from "../SellButton";
 import CancelOrderButton from "../CancelOrder";
 import LoadingIcon from "../LoadingIcon";
-import moment from "moment";
+import { NetworkContext } from "../../utils/networkProvider";
 
 const OpenSeaInfo = ({ transaction_hash }) => {
+  const { network } = useContext(NetworkContext);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessaage] = useState("");
   const [asset, setAsset] = useState(null);
-
   useEffect(() => {
     async function getNFT() {
+      setErrorMessaage("");
+      setLoading(true);
       const { data } = await axios.request({
         method: "GET",
         url: `https://api.nftport.xyz/v0/mints/${transaction_hash}`,
-        params: { chain: CHAIN },
+        params: { chain: network },
         headers: {
           "Content-Type": "application/json",
           Authorization: NFTPORT_API_KEY,
         },
       });
+      console.log(data);
       if (data.response === "OK") {
-        const response = await Moralis.Plugins.opensea.getAsset({
-          network: "testnet",
-          tokenAddress: data.contract_address,
-          tokenId: data.token_id,
-        });
-        setAsset(response);
+        if (network === "rinkeby") {
+          const response = await Moralis.Plugins.opensea.getAsset({
+            network: "testnet",
+            tokenAddress: data.contract_address,
+            tokenId: data.token_id,
+          });
+          console.log(response);
+          setAsset(response);
+        } else {
+          setAsset({
+            network,
+            openseaLink: `https://opensea.io/assets/matic/${data.contract_address}/${data.token_id}`,
+            sellOrders: [],
+          });
+        }
+      } else {
+        setErrorMessaage(data.error);
       }
 
       setLoading(false);
     }
     getNFT();
-  }, [transaction_hash]);
-
-  console.log(asset);
+  }, [transaction_hash, network]);
 
   if (loading) return <LoadingIcon />;
+  if (errorMessage)
+    return (
+      <div className="row">
+        <div className="col-md-12 text-center">
+          <h4 className="mt-4">Uh oh!</h4>
+          <p
+            className="mb-0"
+            style={{
+              wordBreak: "break-all",
+            }}>
+            {errorMessage}
+          </p>
+        </div>
+      </div>
+    );
 
   return asset ? (
-    <div className="row">
-      <div className="col-md-4">
-        <div className="card">
-          <div className="card-body">
-            <h4 className="card-title">
-              {moment(
-                asset.traits.find((trait) => trait.trait_type === "memint")
-                  .value * 1000
-              ).format("MMMM Do[,] YYYY")}
-            </h4>
-          </div>
+    <>
+      <div className="card mb-4">
+        <div className="card-body">
+          <h4 className="card-title">View on OpenSea</h4>
+          <p className="card-text">
+            Check out your NFT on the OpenSea marketplace!
+          </p>
+          <a
+            href={asset.openseaLink}
+            target="_blank"
+            className="btn btn-primary w-100"
+            rel="noreferrer">
+            Visit Page
+          </a>
         </div>
       </div>
-      <div className="col-md-4">
+      {network === "rinkeby" ? (
+        <>
+          {asset.sellOrders.length === 0 ? (
+            <SellButton asset={asset} />
+          ) : (
+            <CancelOrderButton asset={asset} />
+          )}
+        </>
+      ) : (
         <div className="card">
           <div className="card-body">
-            <h4 className="card-title">View on OpenSea</h4>
+            <h4 className="card-title">API Not Support</h4>
             <p className="card-text">
-              Check out your NFT on the OpenSea marketplace!
+              Sell order API calls aren't currently supported on the Polygon
+              network, but you can still create a sell order on Opensea!
             </p>
-            <a
-              href={asset.openseaLink}
-              target="_blank"
-              className="btn btn-primary w-100"
-              rel="noreferrer">
-              Visit Page
-            </a>
           </div>
         </div>
-      </div>
-      <div className="col-md-4">
-        {asset.sellOrders.length === 0 ? (
-          <SellButton asset={asset} />
-        ) : (
-          <CancelOrderButton asset={asset} />
-        )}
-      </div>
-    </div>
+      )}
+    </>
   ) : (
     <div className="row">
       <div className="col-md-12 text-center">

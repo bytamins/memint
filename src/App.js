@@ -22,6 +22,7 @@ import Minted from "./pages/Minted";
 import MintedDay from "./pages/MintedDay";
 import LoadingIcon from "./components/LoadingIcon";
 import Roadmap from "./pages/Public/Roadmap";
+import { NetworkConsumer } from "./utils/networkProvider";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -49,29 +50,36 @@ function App() {
   ) : (
     <Page>
       {user ? (
-        <Content>
-          <Header />
-          {user.get("birthdate_unix") ? (
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/calendar" element={<Calendar />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/minted" element={<Minted />} />
-              <Route path="/minted/:objectId" element={<MintedDay />} />
-              <Route path="/day/:timestamp" element={<Day />} />
-              <Route path="/*" element={<Navigate to="/dashboard" />} />
-            </Routes>
-          ) : (
-            <Routes>
-              <Route path="/onboard" element={<Onboard />} />
-              <Route path="/roadmap" element={<Roadmap />} />
-              <Route path="/*" element={<Navigate to="onboard" />} />
-            </Routes>
+        <NetworkConsumer>
+          {(context) => (
+            <Content>
+              <Header
+                network={context.network}
+                setNetwork={context.setNetwork}
+              />
+              {user.get("birthdate_unix") ? (
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/calendar" element={<Calendar />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/minted" element={<Minted />} />
+                  <Route path="/minted/:objectId" element={<MintedDay />} />
+                  <Route path="/day/:timestamp" element={<Day />} />
+                  <Route path="/*" element={<Navigate to="/dashboard" />} />
+                </Routes>
+              ) : (
+                <Routes>
+                  <Route path="/onboard" element={<Onboard />} />
+                  <Route path="/roadmap" element={<Roadmap />} />
+                  <Route path="/*" element={<Navigate to="onboard" />} />
+                </Routes>
+              )}
+              <ToastContainer />
+              <Footer />
+            </Content>
           )}
-          <ToastContainer />
-          <Footer />
-        </Content>
+        </NetworkConsumer>
       ) : (
         <Content>
           <Header />
