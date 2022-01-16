@@ -10,12 +10,12 @@
         "name": "Features"
       },
       {
-        "path": "/sponsors",
-        "name": "Sponsors"
-      },
-      {
         "path": "/roadmap",
         "name": "Roadmap"
+      },
+      {
+        "path": "/integrations",
+        "name": "Integrations"
       }
     ],
     "authenticated": [

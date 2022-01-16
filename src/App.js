@@ -21,6 +21,7 @@ import Calendar from "./pages/Calendar";
 import Minted from "./pages/Minted";
 import MintedDay from "./pages/MintedDay";
 import LoadingIcon from "./components/LoadingIcon";
+import Roadmap from "./pages/Public/Roadmap";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -64,6 +65,7 @@ function App() {
           ) : (
             <Routes>
               <Route path="/onboard" element={<Onboard />} />
+              <Route path="/roadmap" element={<Roadmap />} />
               <Route path="/*" element={<Navigate to="onboard" />} />
             </Routes>
           )}
@@ -75,6 +77,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/roadmap" element={<Roadmap />} />
           </Routes>
           <ToastContainer />
           <Footer />

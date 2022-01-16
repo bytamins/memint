@@ -12,7 +12,7 @@ const Home = () => {
             }}>
             NFTs
           </h1>
-          <h5>for your everyday life.</h5>
+          <h5>of your everyday life.</h5>
           <MetamaskButton />
         </div>
         <div className="col-md-6">

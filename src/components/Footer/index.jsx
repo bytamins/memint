@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="row d-flex align-items-center">
         <div className="col-md-6">
           <span>
-            © 2021 memint &middot; a project by{" "}
+            © 2022 memint &middot; a project by{" "}
             <a href="https://www.bytamins.com" target="_blank" rel="noreferrer">
               bytamins
             </a>
