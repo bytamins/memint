@@ -7,6 +7,7 @@ import {
   DAY_LABEL_FORMAT,
 } from "../../utils/constants";
 import DayCard from "../DayCard";
+import LoadingIcon from "../LoadingIcon";
 
 const DaysNav = ({ view }) => {
   const { user } = useMoralis();
@@ -16,7 +17,7 @@ const DaysNav = ({ view }) => {
   );
 
   return isLoading ? (
-    <h1>Loading...</h1>
+    <LoadingIcon />
   ) : (
     <div className="row">
       {[

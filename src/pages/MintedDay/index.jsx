@@ -3,6 +3,7 @@ import { useMoralisQuery } from "react-moralis";
 import { useParams } from "react-router-dom";
 import ReactJson from "react-json-view";
 import OpenSeaInfo from "../../components/OpenSeaInfo";
+import LoadingIcon from "../../components/LoadingIcon";
 
 const MintedDay = () => {
   const { objectId } = useParams();
@@ -14,7 +15,7 @@ const MintedDay = () => {
   const record = data[0];
 
   return isLoading || !record ? (
-    <h1>Loading...</h1>
+    <LoadingIcon />
   ) : (
     <div className="container mt-5">
       <PageTitle

@@ -17,6 +17,7 @@ import Profile from "./pages/Profile";
 import Calendar from "./pages/Calendar";
 import Minted from "./pages/Minted";
 import MintedDay from "./pages/MintedDay";
+import LoadingIcon from "./components/LoadingIcon";
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
         <UserConsumer>
           {(context) =>
             context.loading ? (
-              <h1>Loading...</h1>
+              <LoadingIcon />
             ) : (
               <>
                 <Header

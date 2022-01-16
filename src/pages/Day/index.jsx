@@ -14,6 +14,7 @@ import { DAY_LABEL_FORMAT } from "../../utils/constants";
 import { TokenPreview, DayMeta, MetaContainer } from "./styled";
 import MintArea from "../../components/MintArea";
 import MetadataPreview from "../../components/MetadataPreview";
+import LoadingIcon from "../../components/LoadingIcon";
 const Day = () => {
   const { user } = useMoralis();
   const { timestamp } = useParams();
@@ -50,7 +51,7 @@ const Day = () => {
   console.log(day);
 
   return isLoading ? (
-    <h1>Loading...</h1>
+    <LoadingIcon />
   ) : (
     <div className="container mt-5">
       <div className="row">

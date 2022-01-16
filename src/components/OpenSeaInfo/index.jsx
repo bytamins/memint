@@ -6,6 +6,7 @@ import { OpenSeaPort, Network } from "opensea-js";
 import { CHAIN, NFTPORT_API_KEY } from "../../utils/constants";
 import SellButton from "../SellButton";
 import CancelOrderButton from "../CancelOrder";
+import LoadingIcon from "../LoadingIcon";
 
 // const provider = new Web3.providers.HttpProvider("https://mainnet.infura.io");
 // window.ethere
@@ -70,7 +71,7 @@ const OpenSeaInfo = ({ transaction_hash }) => {
       )}
     </div>
   ) : (
-    <h1>Loading...</h1>
+    <LoadingIcon />
   );
 };
 

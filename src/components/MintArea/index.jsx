@@ -61,6 +61,11 @@ const MintArea = ({ day }) => {
             { trait_type: "Month", value: moment(dayLabel).format("MMMM") },
             { trait_type: "Day", value: moment(dayLabel).format("DD") },
             { trait_type: "Week Day", value: moment(dayLabel).format("dddd") },
+            {
+              display_type: "date",
+              trait_type: "memint",
+              value: moment(dayLabel).unix(),
+            },
           ],
         },
       });

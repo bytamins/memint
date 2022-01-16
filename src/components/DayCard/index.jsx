@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { DEFAULT_TITLE } from "../../utils/constants";
+import { Card } from "./styled";
 
-const DayCard = ({ dayLabel, dayRecord, col }) => {
+const DayCard = ({ dayLabel, dayRecord, col, resetBorder }) => {
   if (moment(dayLabel).unix() > moment().unix()) return null;
   return dayRecord.id ? (
     <div className={col}>
-      <div
+      <Card
+        resetBorder={resetBorder}
         className={`card ${dayRecord.get("tokenId") && `border-primary`} ${
           dayRecord.get("minted") && "border-success"
         } mb-4`}>
@@ -42,7 +44,7 @@ const DayCard = ({ dayLabel, dayRecord, col }) => {
             </div>
           )}
         </div>
-      </div>
+      </Card>
     </div>
   ) : (
     <div className="col-md-4">

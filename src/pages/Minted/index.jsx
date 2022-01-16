@@ -38,7 +38,12 @@ const Minted = () => {
       />
       <div className="row">
         {days.map((day) => (
-          <DayCard dayRecord={day} col="col-md-3" />
+          <DayCard
+            key={day.id}
+            dayRecord={day}
+            col="col-md-3"
+            resetBorder={true}
+          />
         ))}
       </div>
     </div>
