@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import moment from "moment";
 import { toast } from "react-toastify";
@@ -11,11 +13,19 @@ const headers = {
 };
 
 const MintArea = ({ day }) => {
+  let navigate = useNavigate();
+
   const { user } = useMoralis();
 
   const dayLabel = day.get("dayLabel");
 
   async function mint() {
+    console.log([
+      { trait_type: "Year", value: moment(dayLabel).format(YEAR_FORMAT) },
+      { trait_type: "Month", value: moment(dayLabel).format("MMMM") },
+      { trait_type: "Day", value: moment(dayLabel).format("DD") },
+      { trait_type: "Week Day", value: moment(dayLabel).format("dddd") },
+    ]);
     try {
       const { data } = await axios.request({
         method,
@@ -52,6 +62,8 @@ const MintArea = ({ day }) => {
       day.set("minted", true);
       day.set("mint_response", response.data);
       day.save();
+      toast.success("You minted an NFT!");
+      navigate(`/minted/${day.id}`);
     } catch (err) {
       toast.error(err.message);
     }

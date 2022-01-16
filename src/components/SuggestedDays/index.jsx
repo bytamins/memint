@@ -58,7 +58,7 @@ const SuggestedDays = () => {
           description={`Show the world how you ended ${moment()
             .subtract(1, "year")
             .format("YYYY")}.`}
-          link="/day/"
+          link={`/day/${moment("12/31/21").unix()}`}
           color="#ea643f"
           icon={faGlassCheers}
         />

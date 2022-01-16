@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-
+import Moralis from "moralis";
 import { useMoralis } from "react-moralis";
 
 const UserContext = createContext();
@@ -10,15 +10,22 @@ const UserProvider = ({ children }) => {
     authenticate,
     isAuthenticated,
     user: MoralisUser,
-    currentAsync,
+    refetchUserData,
+    logout,
   } = useMoralis();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
   async function refreshUser() {
-    const response = await currentAsync();
+    const response = await refetchUserData();
     setUser(response);
   }
+
+  Moralis.onAccountsChanged(async function (accounts) {
+    console.log("ON ACCOUNTS CHANGED");
+    console.log(accounts);
+    logout();
+  });
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -26,6 +33,8 @@ const UserProvider = ({ children }) => {
     }
     setLoading(false);
   }, [isAuthenticated, MoralisUser]);
+
+  console.log(user);
 
   return (
     <UserContext.Provider

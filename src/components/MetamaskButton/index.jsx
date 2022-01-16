@@ -1,31 +1,29 @@
 import { useContext } from "react";
+import { useMoralis } from "react-moralis";
 import { UserContext } from "../../providers/user";
+
 const MetamaskButton = () => {
-  const { account, setAccount } = useContext(UserContext);
+  const { refreshUser } = useContext(UserContext);
+  const { authenticate, isAuthenticated, logout } = useMoralis();
 
-  const connectWallet = async () => {
-    const { ethereum } = window;
+  async function logOut() {
+    await logout();
+    await refreshUser();
+  }
 
-    if (!ethereum) {
-      alert("Please install Metmask!");
-    }
-    try {
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      console.log("Found an account!", accounts[0]);
-      setAccount(accounts[0]);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  return account ? (
-    <button className="btn btn-warning btn-lg disabled">
-      Metamask Connected!
+  return isAuthenticated ? (
+    <button onClick={logOut} className="btn btn-warning btn-lg">
+      Disconnect MetaMask
     </button>
   ) : (
-    <button onClick={connectWallet} className="btn btn-warning btn-lg">
-      Connect w/ Metamask
+    <button
+      onClick={() =>
+        authenticate({
+          signingMessage: "Log in using Moralis",
+        })
+      }
+      className="btn btn-warning btn-lg">
+      Connect w/ MetaMask
     </button>
   );
 };
