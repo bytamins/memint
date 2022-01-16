@@ -27,12 +27,13 @@ const UserProvider = ({ children }) => {
     console.log("ON ACCOUNTS CHANGED");
     console.log(accounts);
     logout();
-    await refreshUser();
+    setUser(null);
   });
 
   useEffect(() => {
     if (isAuthenticated) {
       setUser(MoralisUser);
+      Moralis.enableWeb3();
     }
     setLoading(false);
   }, [isAuthenticated, MoralisUser]);
@@ -42,7 +43,6 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     if (isInitialized) {
       Moralis.initPlugins();
-      Moralis.enableWeb3();
     }
   }, [isInitialized]);
 

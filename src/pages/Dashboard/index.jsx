@@ -1,7 +1,9 @@
+import { useMoralis } from "react-moralis";
 import PageTitle from "../../components/PageTitle";
 import SuggestedDays from "../../components/SuggestedDays";
 
-const Dashboard = ({ user }) => {
+const Dashboard = () => {
+  const { user } = useMoralis();
   if (!user) {
     return null;
   }
