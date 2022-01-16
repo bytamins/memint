@@ -1,38 +1,6 @@
-# Setup App
+# Staging Site
 
-## Deploy Contract via NFTPort
-
-```
-curl --request POST \
-  --url https://api.nftport.xyz/v0/contracts \
-  --header 'Authorization: Your API key' \
-  --header 'Content-Type: application/json' \
-  --data '{
-  "chain": "polygon",
-  "name": "memint",
-  "symbol": "MMNT",
-  "owner_address": "0x5A78a333311EE16a8d6287B8c54A66033917F672",
-  "metadata_updatable": false
-}'
-```
-
-## Get Contract Address
-
-Use transaction hash from previous request.
-
-```
-curl --request GET \
-  --url 'https://api.nftport.xyz/v0/contracts/transaction_hash?chain=polygon' \
-  --header 'Authorization: Your API key' \
-  --header 'Content-Type: application/json'
-```
-
-NFTPort
-transaction_hash: 0xc8a0939a43bce63d11673e6cb74d21adea5a671eda0d9d99f93219b46f4ff5fe
-Polygon Contract Address: 0x1189B301458ab7b6bA4a367a0a460aaE01fFf2a7
-Rinkeby Contract Address: 0x698c978BfF4C76db094133DfDd08EDFc5C766eB8
-
-Currently Set: Rinkeby
+Learn more here: https://memint.vercel.app/
 
 # Getting Started with Create React App
 

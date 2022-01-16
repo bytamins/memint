@@ -11,6 +11,7 @@ const Roadmap = () => {
         <div className="col-md-6 offset-md-3">
           <ul>
             <li>Add tests</li>
+            <li>Check for day NFT uniqueness (wallet x timestamp)</li>
             <li>More transaction history + analytics.</li>
             <li>Better onboarding (collect more info, suggest more NFTs)</li>
             <li>

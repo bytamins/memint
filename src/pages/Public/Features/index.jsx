@@ -9,19 +9,14 @@ const Features = () => {
       />
       <div className="row">
         <div className="col-md-6 offset-md-3">
-          <ul>
-            <li>Add tests</li>
-            <li>More transaction history + analytics.</li>
-            <li>Better onboarding (collect more info, suggest more NFTs)</li>
-            <li>
-              Implement KYC (prevent someone claiming to be Taylor Swift).
-            </li>
-            <li>Verified Badges</li>
-            <li>Mint/Send to Friend: mint_to_address</li>
-            <li>Friends Functionality</li>
-            <li>Tags Functionality #anniversary #wendys</li>
-            <li>Consider launching new contract/collection for each user.</li>
-          </ul>
+          <p>
+            <strong>Polygon Contact Addres:</strong>{" "}
+            0x1189B301458ab7b6bA4a367a0a460aaE01fFf2a7
+          </p>
+          <p>
+            <strong>Rinkeby Contact Addres:</strong>{" "}
+            0x698c978BfF4C76db094133DfDd08EDFc5C766eB8
+          </p>
         </div>
       </div>
     </div>

@@ -76,7 +76,6 @@ function App() {
               ) : (
                 <Routes>
                   <Route path="/onboard" element={<Onboard />} />
-                  <Route path="/features" element={<Features />} />
                   <Route path="/roadmap" element={<Roadmap />} />
                   <Route path="/*" element={<Navigate to="onboard" />} />
                 </Routes>
@@ -91,6 +90,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/features" element={<Features />} />
             <Route path="/roadmap" element={<Roadmap />} />
           </Routes>
           <ToastContainer />
