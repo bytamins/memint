@@ -5,6 +5,7 @@ import { CHAIN, NFTPORT_API_KEY } from "../../utils/constants";
 import SellButton from "../SellButton";
 import CancelOrderButton from "../CancelOrder";
 import LoadingIcon from "../LoadingIcon";
+import moment from "moment";
 
 const OpenSeaInfo = ({ transaction_hash }) => {
   const [loading, setLoading] = useState(true);
@@ -37,32 +38,57 @@ const OpenSeaInfo = ({ transaction_hash }) => {
 
   console.log(asset);
 
-  return !loading ? (
-    <div className="card mb-4">
-      {asset ? (
-        <div className="card-body">
-          <a
-            href={asset.openseaLink}
-            target="_blank"
-            className="btn btn-primary btn-lg"
-            rel="noreferrer">
-            View on OpenSea
-          </a>
-          {asset.sellOrders.length === 0 ? (
-            <SellButton asset={asset} />
-          ) : (
-            <CancelOrderButton asset={asset} />
-          )}
+  if (loading) return <LoadingIcon />;
+
+  return asset ? (
+    <div className="row">
+      <div className="col-md-4">
+        <div className="card">
+          <div className="card-body">
+            <h4 className="card-title">
+              {moment(
+                asset.traits[asset.traits.length - 1].value * 1000
+              ).format("MMMM Do[,] YYYY")}
+            </h4>
+          </div>
         </div>
-      ) : (
-        <p>
-          Your transaction is still pending. Your details will show up here
-          shortly!
-        </p>
-      )}
+      </div>
+      <div className="col-md-4">
+        <div className="card">
+          <div className="card-body">
+            <h4 className="card-title">View on OpenSea</h4>
+            <p className="card-text">
+              Check out your NFT on the OpenSea marketplace!
+            </p>
+            <a
+              href={asset.openseaLink}
+              target="_blank"
+              className="btn btn-primary w-100"
+              rel="noreferrer">
+              Visit Page
+            </a>
+          </div>
+        </div>
+      </div>
+      <div className="col-md-4">
+        {asset.sellOrders.length === 0 ? (
+          <SellButton asset={asset} />
+        ) : (
+          <CancelOrderButton asset={asset} />
+        )}
+      </div>
     </div>
   ) : (
-    <LoadingIcon />
+    <div className="row">
+      <div className="col-md-12 text-center">
+        <LoadingIcon />
+        <h4 className="mt-4">Nice job!</h4>
+        <p className="mb-0">
+          Your transaction is still pending, but details should show up here
+          shortly...
+        </p>
+      </div>
+    </div>
   );
 };
 

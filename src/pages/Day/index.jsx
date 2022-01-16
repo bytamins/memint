@@ -7,14 +7,12 @@ import {
   useNewMoralisObject,
 } from "react-moralis";
 
-import img_placeholder from "../../assets/img_placeholder.png";
-
 import EditDay from "../../components/EditDay";
 import { DAY_LABEL_FORMAT } from "../../utils/constants";
-import { TokenPreview, DayMeta, MetaContainer } from "./styled";
-import MintArea from "../../components/MintArea";
+
 import MetadataPreview from "../../components/MetadataPreview";
 import LoadingIcon from "../../components/LoadingIcon";
+import AssetCard from "../../components/AssetCard";
 const Day = () => {
   const { user } = useMoralis();
   const { timestamp } = useParams();
@@ -56,34 +54,15 @@ const Day = () => {
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-4">
-          <TokenPreview className="card mb-4">
-            <img
-              src={
-                day.id
-                  ? day.get("image_url") || img_placeholder
-                  : img_placeholder
-              }
-              className="card-img-top"
-              alt="..."
-            />
-            {day.id && (
-              <MetaContainer>
-                <DayMeta>
-                  <h4 className="card-title mb-3">{day.get("title")}</h4>
-                  <p className="card-description">{day.get("description")}</p>
-                </DayMeta>
-              </MetaContainer>
-            )}
-            {day.id && <MintArea day={day} />}
-          </TokenPreview>
+          <AssetCard day={day} />
         </div>
         <div className="col-md-8">
           {day.id && (
             <div className="row">
               <div className="col-md-12">
                 <div className="alert alert-primary" role="alert">
-                  <strong>Pro Tip:</strong> You can keep making changes to this
-                  day until you mint it!
+                  <strong>Pro Tip:</strong> You can keep making changes until
+                  you mint this day!
                 </div>
               </div>
             </div>

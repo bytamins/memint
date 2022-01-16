@@ -1,10 +1,12 @@
+import { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Moralis } from "moralis";
+
 import { useMoralis } from "react-moralis";
 
 import "./App.css";
-import { UserConsumer } from "./providers/user";
 import { Content, Page } from "./utils/styled";
 
 import Header from "./components/Header";
@@ -21,46 +23,63 @@ import MintedDay from "./pages/MintedDay";
 import LoadingIcon from "./components/LoadingIcon";
 
 function App() {
-  const { user } = useMoralis();
-  return (
+  const [loading, setLoading] = useState(true);
+  const { user, logout, isAuthenticated, isInitialized } = useMoralis();
+
+  Moralis.onAccountsChanged(async function (accounts) {
+    logout();
+  });
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      Moralis.enableWeb3();
+    }
+    setLoading(false);
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (isInitialized) {
+      Moralis.initPlugins();
+    }
+  }, [isInitialized]);
+
+  return loading ? (
+    <LoadingIcon />
+  ) : (
     <Page>
-      <Content>
-        <UserConsumer>
-          {(context) =>
-            context.loading ? (
-              <LoadingIcon />
-            ) : (
-              <>
-                <Header
-                  user={context.user}
-                  network={context.network}
-                  setNetwork={context.setNetwork}
-                />
-                {context.user ? (
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/calendar" element={<Calendar />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/minted" element={<Minted />} />
-                    <Route path="/minted/:objectId" element={<MintedDay />} />
-                    <Route path="/day/:timestamp" element={<Day />} />
-                    <Route path="/*" element={<Navigate to="/dashboard" />} />
-                  </Routes>
-                ) : (
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/onboard" element={<Onboard />} />
-                    <Route path="/*" element={<Navigate to="onboard" />} />
-                  </Routes>
-                )}
-                <ToastContainer />
-                <Footer />
-              </>
-            )
-          }
-        </UserConsumer>
-      </Content>
+      {user ? (
+        <Content>
+          <Header />
+          {user.get("birthdate_unix") ? (
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/minted" element={<Minted />} />
+              <Route path="/minted/:objectId" element={<MintedDay />} />
+              <Route path="/day/:timestamp" element={<Day />} />
+              <Route path="/*" element={<Navigate to="/dashboard" />} />
+            </Routes>
+          ) : (
+            <Routes>
+              <Route path="/onboard" element={<Onboard />} />
+              <Route path="/*" element={<Navigate to="onboard" />} />
+            </Routes>
+          )}
+          <ToastContainer />
+          <Footer />
+        </Content>
+      ) : (
+        <Content>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+          <ToastContainer />
+          <Footer />
+        </Content>
+      )}
     </Page>
   );
 }

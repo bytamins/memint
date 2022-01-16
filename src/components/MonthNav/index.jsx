@@ -1,19 +1,8 @@
 import moment from "moment";
-import { useEffect } from "react";
 import { YEAR_FORMAT } from "../../utils/constants";
 
 const MonthNav = ({ view, setView }) => {
   const today = moment();
-  const twelveMonths = [...Array(12).keys()];
-  console.log(twelveMonths);
-  if (view.year !== today.format(YEAR_FORMAT)) {
-    console.log(today.month());
-  }
-
-  useEffect(() => {
-    console.log("Month Nav View Change", view.month);
-  }, [view]);
-
   return view.year === today.format(YEAR_FORMAT) ? (
     <ul className="nav nav-pills flex-column">
       {[...Array(today.month() + 1).keys()].map((monthDiff) => {

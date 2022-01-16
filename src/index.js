@@ -8,7 +8,6 @@ import { MoralisProvider } from "react-moralis";
 
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
-import { UserProvider } from "./providers/user";
 
 const serverUrl = "https://wlpp28btq31m.usemoralis.com:2053/server";
 const appId = "LZEWPr567NGoaggVc7w8IYTEHtPiiZOHqR0efKUe";
@@ -16,11 +15,9 @@ const appId = "LZEWPr567NGoaggVc7w8IYTEHtPiiZOHqR0efKUe";
 ReactDOM.render(
   <React.StrictMode>
     <MoralisProvider appId={appId} serverUrl={serverUrl}>
-      <UserProvider>
-        <Router>
-          <App />
-        </Router>
-      </UserProvider>
+      <Router>
+        <App />
+      </Router>
     </MoralisProvider>
   </React.StrictMode>,
   document.getElementById("root")

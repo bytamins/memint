@@ -1,35 +1,41 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useMoralis } from "react-moralis";
-import { UserContext } from "../../providers/user";
+
 import InputField from "../../components/InputField";
+import PageTitle from "../../components/PageTitle";
+import { toast } from "react-toastify";
 
 const Onboard = () => {
   let navigate = useNavigate();
 
-  const { refreshUser } = useContext(UserContext);
   const [birthdate, setBirthdate] = useState("");
   const { setUserData, isUserUpdating } = useMoralis();
 
   async function updateBirthdate() {
+    var date = moment(birthdate);
+    if (!date.isValid()) {
+      return toast.error("Please provide a valid birthdate.");
+    }
     await setUserData({
       birthdate_unix: moment(birthdate).unix(),
       birthdate_label: birthdate,
     });
-    await refreshUser();
     navigate("/dashboard");
   }
   return (
     <div className="container mt-5">
-      <div className="col-md-4 offset-md-4 text-center mt-5">
-        <h1>Welcome!</h1>
-      </div>
-      <div className="col-md-4 offset-md-4 mt-5">
+      <PageTitle
+        title="Welcome!"
+        description="We need a little more information from you."
+      />
+      <div className="col-md-4 offset-md-4">
         <div className="mb-3">
           <label className="form-label">Birthdate</label>
           <InputField
             placeholder="12/13/1991"
+            mask="99/99/9999"
             value={birthdate}
             onChange={setBirthdate}
           />

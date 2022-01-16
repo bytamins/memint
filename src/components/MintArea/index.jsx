@@ -28,9 +28,11 @@ const MintArea = ({ day }) => {
     let newProgress = progress;
     if (day.get("title")) {
       newProgress += 30;
-    } else if (day.get("description")) {
+    }
+    if (day.get("description")) {
       newProgress += 30;
-    } else if (day.get("image_url")) {
+    }
+    if (day.get("image_url")) {
       newProgress += 30;
     }
 
