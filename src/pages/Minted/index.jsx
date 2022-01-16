@@ -1,10 +1,7 @@
-// import axios from "axios";
-// import { useEffect } from "react";
 import { useMoralis, useMoralisQuery } from "react-moralis";
 import LoadingIcon from "../../components/LoadingIcon";
 import DayCard from "../../components/DayCard";
 import PageTitle from "../../components/PageTitle";
-// import { CHAIN, NFTPORT_API_KEY } from "../../utils/constants";
 
 const Minted = () => {
   const { user } = useMoralis();
@@ -13,23 +10,6 @@ const Minted = () => {
     query.equalTo("user", user).equalTo("minted", true).limit(100)
   );
 
-  console.log(days);
-
-  // useEffect(() => {
-  //   async function getMinted() {
-  //     const { data } = await axios.request({
-  //       method: "GET",
-  //       url: `https://api.nftport.xyz/v0/accounts/${user.get("ethAddress")}`,
-  //       params: { chain: CHAIN },
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: NFTPORT_API_KEY,
-  //       },
-  //     });
-  //     console.log(data.nfts);
-  //   }
-  //   getMinted();
-  // }, [user]);
   return isLoading ? (
     <LoadingIcon />
   ) : (
@@ -46,6 +26,7 @@ const Minted = () => {
             <DayCard
               key={day.id}
               dayRecord={day}
+              dayLabel={day.get("dayLabel")}
               col="col-md-3"
               resetBorder={true}
             />

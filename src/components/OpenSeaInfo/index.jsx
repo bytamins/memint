@@ -47,7 +47,8 @@ const OpenSeaInfo = ({ transaction_hash }) => {
           <div className="card-body">
             <h4 className="card-title">
               {moment(
-                asset.traits[asset.traits.length - 1].value * 1000
+                asset.traits.find((trait) => trait.trait_type === "memint")
+                  .value * 1000
               ).format("MMMM Do[,] YYYY")}
             </h4>
           </div>

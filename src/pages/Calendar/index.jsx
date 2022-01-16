@@ -26,21 +26,19 @@ const Calendar = () => {
         title="Calendar"
         description="You can mint any day between now &amp; the day you were born."
       />
-      <div className="row">
-        <div className="col-md-2">
-          <h5>Years</h5>
-          <hr />
+      <div className="row mb-4">
+        <div className="col-md-2"></div>
+        <div className="col-md-2"></div>
+        <div className="col-md-2 offset-md-4">
+          {/* <h5 className="text-end">Year</h5> */}
           <YearNav view={view} setView={setView} />
         </div>
         <div className="col-md-2">
-          <h5>Months</h5>
-          <hr />
+          {/* <h5 className="text-end">Month</h5> */}
           <MonthNav view={view} setView={setView} />
         </div>
-        <div className="col-md-8">
-          <DaysNav view={view} />
-        </div>
       </div>
+      <DaysNav view={view} />
     </div>
   );
 };

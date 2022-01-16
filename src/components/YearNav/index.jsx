@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import moment from "moment";
 import { useMoralis } from "react-moralis";
 
@@ -9,36 +8,28 @@ const YearNav = ({ view, setView }) => {
 
   const today = moment();
 
-  useEffect(() => {
-    console.log("Month Nav View Change", view.month);
-  }, [view]);
-
   return (
-    <ul className="nav nav-pills flex-column mb-4">
+    <select
+      className="form-select form-select-lg"
+      value={view.year}
+      onChange={(ev) =>
+        setView({
+          ...view,
+          year: ev.target.value,
+        })
+      }>
       {[
         ...Array(
           today.diff(moment(user.get("birthdate_unix") * 1000), "years") + 2
         ).keys(),
       ].map((yearDiff) => (
-        <li className="nav-item" key={yearDiff}>
-          <a
-            className={`nav-link ${
-              view.year ===
-                moment().subtract(yearDiff, "years").format(YEAR_FORMAT) &&
-              "active"
-            }`}
-            href="#top"
-            onClick={() =>
-              setView({
-                ...view,
-                year: moment().subtract(yearDiff, "years").format(YEAR_FORMAT),
-              })
-            }>
-            {moment().subtract(yearDiff, "years").format(YEAR_FORMAT)}
-          </a>
-        </li>
+        <option
+          key={yearDiff}
+          value={moment().subtract(yearDiff, "years").format(YEAR_FORMAT)}>
+          {moment().subtract(yearDiff, "years").format(YEAR_FORMAT)}
+        </option>
       ))}
-    </ul>
+    </select>
   );
 };
 

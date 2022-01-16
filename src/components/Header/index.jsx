@@ -1,19 +1,32 @@
 import { Link, useLocation } from "react-router-dom";
 import { useMoralis } from "react-moralis";
+import { useNavigate } from "react-router-dom";
+
 import logo from "../../assets/logo.png";
 // import rinkeby from "../../assets/rinkeby.png";
 // import polygon from "../../assets/polygon.png";
 import {
   Address,
   AddressLink,
-  // NetworkButton,
+  NetworkButton,
   StyledHeader,
   StyledLinks,
 } from "./styled";
 import c from "./content.json";
 const Header = () => {
+  let navigate = useNavigate();
+
   const { pathname } = useLocation();
-  const { user } = useMoralis();
+  const { user, authenticate } = useMoralis();
+
+  async function logIn() {
+    await authenticate({
+      signingMessage: "Log in using Moralis",
+    });
+    if (user) {
+      navigate("/dashboard");
+    }
+  }
 
   const address = user ? user.get("ethAddress") : "";
   return (
@@ -74,7 +87,9 @@ const Header = () => {
                   )}`}</Address>
                 </AddressLink>
               ) : (
-                <Address>Not Connected</Address>
+                <NetworkButton onClick={logIn}>
+                  <Address>Not Connected</Address>
+                </NetworkButton>
               )}
             </div>
           </div>
