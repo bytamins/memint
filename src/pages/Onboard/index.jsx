@@ -8,9 +8,9 @@ import InputField from "../../components/InputField";
 const Onboard = () => {
   let navigate = useNavigate();
 
-  const { user, refreshUser } = useContext(UserContext);
+  const { refreshUser } = useContext(UserContext);
   const [birthdate, setBirthdate] = useState("");
-  const { setUserData, userError, isUserUpdating } = useMoralis();
+  const { setUserData, isUserUpdating } = useMoralis();
 
   async function updateBirthdate() {
     await setUserData({
@@ -40,8 +40,9 @@ const Onboard = () => {
         <button
           onClick={updateBirthdate}
           type="button"
-          className="btn btn-primary w-100">
-          Go to Dashboard
+          className="btn btn-primary w-100"
+          disabled={isUserUpdating}>
+          {isUserUpdating ? "Creating Account..." : "Go to Dashboard"}
         </button>
       </div>
     </div>

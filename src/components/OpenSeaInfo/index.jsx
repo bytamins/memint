@@ -1,19 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import * as Web3 from "web3";
 import Moralis from "moralis";
-import { OpenSeaPort, Network } from "opensea-js";
 import { CHAIN, NFTPORT_API_KEY } from "../../utils/constants";
 import SellButton from "../SellButton";
 import CancelOrderButton from "../CancelOrder";
 import LoadingIcon from "../LoadingIcon";
-
-// const provider = new Web3.providers.HttpProvider("https://mainnet.infura.io");
-// window.ethere
-// const seaport = new OpenSeaPort(provider, {
-//   networkName: Network.Rinkeby,
-//   // apiKey: YOUR_API_KEY,
-// });
 
 const OpenSeaInfo = ({ transaction_hash }) => {
   const [loading, setLoading] = useState(true);

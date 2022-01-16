@@ -1,7 +1,6 @@
 import PageTitle from "../../components/PageTitle";
 import { useMoralisQuery } from "react-moralis";
 import { useParams } from "react-router-dom";
-import ReactJson from "react-json-view";
 import OpenSeaInfo from "../../components/OpenSeaInfo";
 import LoadingIcon from "../../components/LoadingIcon";
 
