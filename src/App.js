@@ -11,6 +11,7 @@ import { Content, Page } from "./utils/styled";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import LoadingIcon from "./components/LoadingIcon";
 
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
@@ -20,10 +21,11 @@ import Profile from "./pages/Profile";
 import Calendar from "./pages/Calendar";
 import Minted from "./pages/Minted";
 import MintedDay from "./pages/MintedDay";
-import LoadingIcon from "./components/LoadingIcon";
-import Features from "./pages/Public/Features";
 
+import Features from "./pages/Public/Features";
 import Roadmap from "./pages/Public/Roadmap";
+import Integrations from "./pages/Public/Integrations";
+
 import { NetworkConsumer } from "./utils/networkProvider";
 
 function App() {
@@ -92,6 +94,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/features" element={<Features />} />
             <Route path="/roadmap" element={<Roadmap />} />
+            <Route path="/integrations" element={<Integrations />} />
           </Routes>
           <ToastContainer />
           <Footer />

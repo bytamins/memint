@@ -9,6 +9,11 @@ const Roadmap = () => {
       />
       <div className="row">
         <div className="col-md-6 offset-md-3">
+          <h4>Bug Fixes</h4>
+          <ul>
+            <li>OpenSea Metadata: Year + Day appear as "Levels" numbers.</li>
+          </ul>
+          <h4>New Features</h4>
           <ul>
             <li>Add tests</li>
             <li>Check for day NFT uniqueness (wallet x timestamp)</li>
