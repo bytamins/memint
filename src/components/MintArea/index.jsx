@@ -1,10 +1,16 @@
 import { useNavigate } from "react-router-dom";
-
+import { useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment";
 import { toast } from "react-toastify";
 import { useMoralis } from "react-moralis";
-import { NFTPORT_API_KEY, YEAR_FORMAT } from "../../utils/constants";
+import {
+  CHAIN,
+  NFTPORT_API_KEY,
+  RINKEBY_CONTRACT,
+  YEAR_FORMAT,
+} from "../../utils/constants";
+import { ButtonContainer } from "./styled";
 
 const method = "POST";
 const headers = {
@@ -16,6 +22,21 @@ const MintArea = ({ day }) => {
   let navigate = useNavigate();
 
   const { user } = useMoralis();
+  const [progress, setProgress] = useState(10);
+
+  useEffect(() => {
+    let newProgress = progress;
+    if (day.get("title")) {
+      newProgress += 30;
+    } else if (day.get("description")) {
+      newProgress += 30;
+    } else if (day.get("image_url")) {
+      newProgress += 30;
+    }
+
+    setProgress(newProgress);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [day]);
 
   const dayLabel = day.get("dayLabel");
 
@@ -43,22 +64,18 @@ const MintArea = ({ day }) => {
           ],
         },
       });
-      console.log(data);
       const { metadata_uri } = data;
-      console.log(metadata_uri);
       const response = await axios.request({
         method,
         url: "https://api.nftport.xyz/v0/mints/customizable",
         headers,
         data: {
-          chain: "polygon",
-          contract_address: "0x1189B301458ab7b6bA4a367a0a460aaE01fFf2a7",
+          chain: CHAIN,
+          contract_address: RINKEBY_CONTRACT,
           metadata_uri,
           mint_to_address: user.get("ethAddress"),
         },
       });
-      console.log(response);
-      console.log(response.data);
       day.set("minted", true);
       day.set("mint_response", response.data);
       day.save();
@@ -70,12 +87,26 @@ const MintArea = ({ day }) => {
   }
 
   return (
-    <div className="card">
-      <div className="card-body">
-        <h4 className="card-title">Mint Your NFT</h4>
-        <button onClick={mint}>Mint</button>
+    <ButtonContainer>
+      <button
+        onClick={mint}
+        className={`btn btn-success btn-lg w-100 ${
+          progress < 100 && "disabled"
+        }`}>
+        Mint NFT
+      </button>
+      <div className="progress mt-4">
+        <div
+          className="progress-bar progress-bar-striped progress-bar-animated bg-success"
+          role="progressbar"
+          style={{
+            width: `${progress}%`,
+          }}
+          aria-valuenow="25"
+          aria-valuemin="0"
+          aria-valuemax="100"></div>
       </div>
-    </div>
+    </ButtonContainer>
   );
 };
 

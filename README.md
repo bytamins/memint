@@ -29,7 +29,10 @@ curl --request GET \
 
 NFTPort
 transaction_hash: 0xc8a0939a43bce63d11673e6cb74d21adea5a671eda0d9d99f93219b46f4ff5fe
-contract_address: 0x1189B301458ab7b6bA4a367a0a460aaE01fFf2a7
+Polygon Contract Address: 0x1189B301458ab7b6bA4a367a0a460aaE01fFf2a7
+Rinkeby Contract Address: 0x698c978BfF4C76db094133DfDd08EDFc5C766eB8
+
+Currently Set: Rinkeby
 
 # Getting Started with Create React App
 

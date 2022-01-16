@@ -17,12 +17,7 @@ const Onboard = () => {
       birthdate_unix: moment(birthdate).unix(),
       birthdate_label: birthdate,
     });
-
-    // user.set("birthdate_unix", moment(birthdate).unix());
-    // user.set("birthdate_label", birthdate);
-    // await user.save();
     await refreshUser();
-
     navigate("/dashboard");
   }
   return (

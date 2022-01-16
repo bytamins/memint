@@ -28,7 +28,11 @@ function App() {
               <h1>Loading...</h1>
             ) : (
               <>
-                <Header user={context.user} />
+                <Header
+                  user={context.user}
+                  network={context.network}
+                  setNetwork={context.setNetwork}
+                />
                 {context.user && !context.user.get("birthdate_unix") ? (
                   <Routes>
                     <Route path="/onboard" element={<Onboard />} />

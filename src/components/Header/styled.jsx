@@ -17,9 +17,22 @@ export const Address = styled.div`
   border-radius: 40px;
   padding: 10px 20px;
   margin-right: 15px;
+  display: flex;
+  align-items: center;
 `;
 
 export const AddressLink = styled(Link)`
   text-decoration: none;
   color: black;
+`;
+
+export const NetworkButton = styled.button`
+  background: transparent;
+  border: 0px;
+  outline: none;
+  padding: 0px;
+  border-radius: 40px;
+  img {
+    margin-right: 5px;
+  }
 `;

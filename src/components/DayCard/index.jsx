@@ -25,21 +25,18 @@ const DayCard = ({ dayLabel, dayRecord, col }) => {
                 <Link
                   to={`/minted/${dayRecord.id}`}
                   className="btn btn-success w-100">
-                  See Details
+                  NFT Actions
                 </Link>
               </div>
             </div>
           ) : (
             <div className="row">
-              <div className="col-md-6">
+              <div className="col-md-12">
                 <Link
                   to={`/day/${moment(dayLabel).unix()}`}
                   className="btn btn-primary w-100">
                   Edit
                 </Link>
-              </div>
-              <div className="col-md-6">
-                <button className="btn btn-success w-100">Mint</button>
               </div>
             </div>
           )}
@@ -57,7 +54,7 @@ const DayCard = ({ dayLabel, dayRecord, col }) => {
             <div className="col-md-7">
               <Link
                 to={`/day/${moment(dayLabel).unix()}`}
-                className="btn btn-primary w-100">
+                className="btn btn-secondary w-100">
                 Add Details
               </Link>
             </div>

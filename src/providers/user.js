@@ -15,6 +15,7 @@ const UserProvider = ({ children }) => {
   } = useMoralis();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [network, setNetwork] = useState("Polygon");
 
   async function refreshUser() {
     const response = await refetchUserData();
@@ -25,6 +26,7 @@ const UserProvider = ({ children }) => {
     console.log("ON ACCOUNTS CHANGED");
     console.log(accounts);
     logout();
+    await refreshUser();
   });
 
   useEffect(() => {
@@ -44,6 +46,8 @@ const UserProvider = ({ children }) => {
         loading,
         user,
         refreshUser,
+        network,
+        setNetwork,
       }}>
       {children}
     </UserContext.Provider>

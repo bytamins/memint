@@ -6,7 +6,6 @@ import {
   useMoralisQuery,
   useNewMoralisObject,
 } from "react-moralis";
-import ReactJson from "react-json-view";
 
 import img_placeholder from "../../assets/img_placeholder.png";
 
@@ -14,6 +13,7 @@ import EditDay from "../../components/EditDay";
 import { DAY_LABEL_FORMAT } from "../../utils/constants";
 import { TokenPreview, DayMeta, MetaContainer } from "./styled";
 import MintArea from "../../components/MintArea";
+import MetadataPreview from "../../components/MetadataPreview";
 const Day = () => {
   const { user } = useMoralis();
   const { timestamp } = useParams();
@@ -31,7 +31,7 @@ const Day = () => {
         dayLabel: moment(timestamp * 1000).format(DAY_LABEL_FORMAT),
       });
       console.log(response);
-      toast.success("Your day was successfully saved!");
+      toast.success("Your day is ready to be edited!");
     } catch (err) {
       toast.error(err.message);
     }
@@ -55,7 +55,7 @@ const Day = () => {
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-4">
-          <TokenPreview className="card">
+          <TokenPreview className="card mb-4">
             <img
               src={
                 day.id
@@ -65,29 +65,33 @@ const Day = () => {
               className="card-img-top"
               alt="..."
             />
-            <MetaContainer>
-              <DayMeta>
-                <h4 className="card-title mb-3">
-                  {day.id ? day.get("title") : ""}
-                </h4>
-                <p className="card-description">
-                  {day.id ? day.get("description") : ""}
-                </p>
-              </DayMeta>
-            </MetaContainer>
+            {day.id && (
+              <MetaContainer>
+                <DayMeta>
+                  <h4 className="card-title mb-3">{day.get("title")}</h4>
+                  <p className="card-description">{day.get("description")}</p>
+                </DayMeta>
+              </MetaContainer>
+            )}
+            {day.id && <MintArea day={day} />}
           </TokenPreview>
         </div>
         <div className="col-md-8">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="alert alert-primary" role="alert">
-                You can make changes to this day until you mint it!
+          {day.id && (
+            <div className="row">
+              <div className="col-md-12">
+                <div className="alert alert-primary" role="alert">
+                  <strong>Pro Tip:</strong> You can keep making changes to this
+                  day until you mint it!
+                </div>
               </div>
             </div>
-          </div>
-          <div className="card mb-4">
+          )}
+          <div className="card">
             <div className="card-header">
-              {moment(timestamp * 1000).format("MMMM Do[,] YYYY")}
+              <h4 className="card-title mb-0">
+                {moment(timestamp * 1000).format("MMMM Do[,] YYYY")}
+              </h4>
             </div>
             {day.id ? (
               <div className="card-body">
@@ -108,27 +112,14 @@ const Day = () => {
                   extra special.
                 </p>
                 <button
-                  className={`btn btn-primary ${isSaving && "disabled"}`}
+                  className={`btn btn-primary btn-lg ${isSaving && "disabled"}`}
                   onClick={createDay}>
                   {isSaving ? "Loading..." : "Add Details"}
                 </button>
               </div>
             )}
           </div>
-          <div className="card mb-4">
-            <div className="card-body">
-              {day.id && (
-                <ReactJson
-                  src={{
-                    name: day.get("title"),
-                    description: day.get("description"),
-                    file_url: day.get("image_url"),
-                  }}
-                />
-              )}
-            </div>
-          </div>
-          {day.id && <MintArea day={day} />}
+          {day.id && <MetadataPreview day={day} />}
         </div>
       </div>
     </div>
