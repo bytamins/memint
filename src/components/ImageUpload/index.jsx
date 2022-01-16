@@ -1,13 +1,14 @@
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { create } from "ipfs-http-client";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { Dropzone } from "./styled";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const ImageUpload = ({ onSuccess }) => {
-  const [imageUrl, setImageUrl] = useState(null);
+  // const [imageUrl, setImageUrl] = useState(null);
   const onDrop = useCallback(
     async (acceptedFiles) => {
       const file = acceptedFiles[0];
@@ -18,8 +19,7 @@ const ImageUpload = ({ onSuccess }) => {
         });
         const { cid } = await client.add(blob);
         const url = `https://ipfs.infura.io/ipfs/${cid}`;
-        console.log(url);
-        setImageUrl(url);
+        // setImageUrl(url);
         onSuccess(url);
       };
       reader.readAsArrayBuffer(file);
@@ -31,16 +31,18 @@ const ImageUpload = ({ onSuccess }) => {
     accept: "image/jpeg, image/png",
     maxFiles: 1,
   });
-  console.log(imageUrl);
   return (
     <div>
-      {imageUrl && <img src={imageUrl} className="w-100 mb-2" alt="..." />}
+      {/* {imageUrl && <img src={imageUrl} className="w-100 mb-2" alt="..." />} */}
       <Dropzone {...getRootProps()}>
         <input {...getInputProps()} />
         {isDragActive ? (
           <p>Drop the image here ...</p>
         ) : (
-          <p>Drop an image here, or click to upload.</p>
+          <>
+            <FontAwesomeIcon icon={faImage} color="#cccccc" size="3x" />
+            <p>Drop an image here, or click to upload.</p>
+          </>
         )}
       </Dropzone>
     </div>

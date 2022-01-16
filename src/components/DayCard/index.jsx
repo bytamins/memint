@@ -3,6 +3,7 @@ import moment from "moment";
 import { DEFAULT_TITLE } from "../../utils/constants";
 
 const DayCard = ({ dayLabel, dayRecord, col }) => {
+  if (moment(dayLabel).unix() > moment().unix()) return null;
   return dayRecord.id ? (
     <div className={col}>
       <div
@@ -25,21 +26,18 @@ const DayCard = ({ dayLabel, dayRecord, col }) => {
                 <Link
                   to={`/minted/${dayRecord.id}`}
                   className="btn btn-success w-100">
-                  See Details
+                  NFT Actions
                 </Link>
               </div>
             </div>
           ) : (
             <div className="row">
-              <div className="col-md-6">
+              <div className="col-md-12">
                 <Link
                   to={`/day/${moment(dayLabel).unix()}`}
                   className="btn btn-primary w-100">
                   Edit
                 </Link>
-              </div>
-              <div className="col-md-6">
-                <button className="btn btn-success w-100">Mint</button>
               </div>
             </div>
           )}
@@ -51,13 +49,15 @@ const DayCard = ({ dayLabel, dayRecord, col }) => {
       <div className={`card mb-4`}>
         <div className="card-body">
           <div className="row d-flex align-items-center">
-            <div className="col-md-5">
+            <div className="col-md-12">
               <h5 className="card-title mb-0">{dayLabel}</h5>
             </div>
-            <div className="col-md-7">
+          </div>
+          <div className="row mt-3">
+            <div className="col-md-12">
               <Link
                 to={`/day/${moment(dayLabel).unix()}`}
-                className="btn btn-primary w-100">
+                className="btn btn-secondary w-100">
                 Add Details
               </Link>
             </div>

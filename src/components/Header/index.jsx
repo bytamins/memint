@@ -1,8 +1,16 @@
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import { Address, StyledHeader, StyledLinks } from "./styled";
+import rinkeby from "../../assets/rinkeby.png";
+import polygon from "../../assets/polygon.png";
+import {
+  Address,
+  AddressLink,
+  NetworkButton,
+  StyledHeader,
+  StyledLinks,
+} from "./styled";
 import c from "./content.json";
-const Header = ({ user }) => {
+const Header = ({ user, network, setNetwork }) => {
   const { pathname } = useLocation();
   const address = user ? user.get("ethAddress") : "";
   return (
@@ -26,10 +34,25 @@ const Header = ({ user }) => {
               ))}
             </StyledLinks>
             <div className="d-flex align-items-center">
+              <NetworkButton
+                onClick={() =>
+                  setNetwork(network === "Polygon" ? "Rinkeby" : "Polygon")
+                }>
+                <Address>
+                  <img
+                    src={network === "Polygon" ? polygon : rinkeby}
+                    alt="Network"
+                    height="16"
+                  />
+                  {network}
+                </Address>
+              </NetworkButton>
               {address ? (
-                <Address>{`${address.substring(0, 6)}...${address.substring(
-                  address.length - 4
-                )}`}</Address>
+                <AddressLink to="/profile">
+                  <Address>{`${address.substring(0, 6)}...${address.substring(
+                    address.length - 4
+                  )}`}</Address>
+                </AddressLink>
               ) : (
                 <Address>Not Connected</Address>
               )}

@@ -11,10 +11,12 @@ const UserProvider = ({ children }) => {
     isAuthenticated,
     user: MoralisUser,
     refetchUserData,
+    isInitialized,
     logout,
   } = useMoralis();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [network, setNetwork] = useState("Polygon");
 
   async function refreshUser() {
     const response = await refetchUserData();
@@ -25,6 +27,7 @@ const UserProvider = ({ children }) => {
     console.log("ON ACCOUNTS CHANGED");
     console.log(accounts);
     logout();
+    await refreshUser();
   });
 
   useEffect(() => {
@@ -36,6 +39,13 @@ const UserProvider = ({ children }) => {
 
   console.log(user);
 
+  useEffect(() => {
+    if (isInitialized) {
+      Moralis.initPlugins();
+      Moralis.enableWeb3();
+    }
+  }, [isInitialized]);
+
   return (
     <UserContext.Provider
       value={{
@@ -44,6 +54,8 @@ const UserProvider = ({ children }) => {
         loading,
         user,
         refreshUser,
+        network,
+        setNetwork,
       }}>
       {children}
     </UserContext.Provider>

@@ -18,7 +18,6 @@ const EditDay = ({ day }) => {
       : {}
   );
 
-  // update days object
   async function saveChanges() {
     try {
       setSaving(true);
@@ -34,17 +33,23 @@ const EditDay = ({ day }) => {
     }
   }
 
+  async function addImage(image_url) {
+    try {
+      setSaving(true);
+      day.set("image_url", image_url);
+      await day.save();
+      toast.success("Your image was successfully uploaded!");
+      setSaving(false);
+    } catch (err) {
+      setSaving(false);
+      toast.error(err.message);
+    }
+  }
+
   return (
     <div className="row">
       <div className="col-md-4">
-        <ImageUpload
-          onSuccess={(image_url) =>
-            setDetails({
-              ...details,
-              image_url,
-            })
-          }
-        />
+        <ImageUpload onSuccess={addImage} />
       </div>
       <div className="col-md-8">
         <div className="mb-3">
@@ -59,7 +64,7 @@ const EditDay = ({ day }) => {
               })
             }
           />
-          <div className="form-text">This is the Title of your NFT.</div>
+          {/* <div className="form-text">This is the Title of your NFT.</div> */}
         </div>
         <div className="mb-3">
           <label className="form-label">Description</label>
@@ -73,7 +78,7 @@ const EditDay = ({ day }) => {
                 description: ev.target.value,
               })
             }></textarea>
-          <div className="form-text">This is the Title of your NFT.</div>
+          {/* <div className="form-text">This is the Title of your NFT.</div> */}
         </div>
         <hr />
         <button

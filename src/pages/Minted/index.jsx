@@ -4,7 +4,7 @@ import { useMoralis, useMoralisQuery } from "react-moralis";
 import DayCard from "../../components/DayCard";
 
 import PageTitle from "../../components/PageTitle";
-import { NFTPORT_API_KEY } from "../../utils/constants";
+import { CHAIN, NFTPORT_API_KEY } from "../../utils/constants";
 
 const Minted = () => {
   const { user } = useMoralis();
@@ -20,7 +20,7 @@ const Minted = () => {
       const { data } = await axios.request({
         method: "GET",
         url: `https://api.nftport.xyz/v0/accounts/${user.get("ethAddress")}`,
-        params: { chain: "polygon" },
+        params: { chain: CHAIN },
         headers: {
           "Content-Type": "application/json",
           Authorization: NFTPORT_API_KEY,
