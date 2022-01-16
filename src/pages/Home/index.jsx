@@ -5,7 +5,13 @@ const Home = () => {
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-6">
-          <h1>NFTS</h1>
+          <h1
+            style={{
+              fontSize: "82px",
+              fontWeight: "bold",
+            }}>
+            NFTs
+          </h1>
           <h5>for your everyday life.</h5>
           <MetamaskButton />
         </div>

@@ -38,16 +38,20 @@ const Minted = () => {
         title="Minted Days"
         description="All of the days you've minted to the blockchain!"
       />
-      <div className="row">
-        {days.map((day) => (
-          <DayCard
-            key={day.id}
-            dayRecord={day}
-            col="col-md-3"
-            resetBorder={true}
-          />
-        ))}
-      </div>
+      {days.length === 0 ? (
+        <p className="text-center">You haven't minted any days yet!</p>
+      ) : (
+        <div className="row">
+          {days.map((day) => (
+            <DayCard
+              key={day.id}
+              dayRecord={day}
+              col="col-md-3"
+              resetBorder={true}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

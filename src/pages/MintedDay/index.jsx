@@ -1,8 +1,8 @@
-import PageTitle from "../../components/PageTitle";
 import { useMoralisQuery } from "react-moralis";
 import { useParams } from "react-router-dom";
 import OpenSeaInfo from "../../components/OpenSeaInfo";
 import LoadingIcon from "../../components/LoadingIcon";
+import AssetCard from "../../components/AssetCard";
 
 const MintedDay = () => {
   const { objectId } = useParams();
@@ -17,24 +17,14 @@ const MintedDay = () => {
     <LoadingIcon />
   ) : (
     <div className="container mt-5">
-      <PageTitle
-        title={record.get("title")}
-        description={record.get("description")}
-      />
       <div className="row mb-5">
-        <div className="col-md-4">
-          <div className="card">
-            <div className="card-body">
-              <img src={record.get("image_url")} className="w-100" alt="..." />
-            </div>
-          </div>
+        <div className="col-md-3">
+          <AssetCard day={record} />
         </div>
-        <div className="col-md-8">
+        <div className="col-md-9">
           <OpenSeaInfo
             transaction_hash={record.get("mint_response").transaction_hash}
           />
-
-          {/* <ReactJson src={record.get("mint_response")} /> */}
         </div>
       </div>
     </div>

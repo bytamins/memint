@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useMoralis } from "react-moralis";
 import {
   faBirthdayCake,
   faCalendarCheck,
@@ -6,11 +6,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import moment from "moment";
-import { UserContext } from "../../providers/user";
 import FeaturedDayCard from "../../components/FeaturedDayCard";
 
 const SuggestedDays = () => {
-  const { user } = useContext(UserContext);
+  const { user } = useMoralis();
   const birthdate = user.get("birthdate_unix");
   return (
     <div className="row mb-5">

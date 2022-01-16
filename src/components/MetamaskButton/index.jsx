@@ -1,14 +1,21 @@
-import { useContext } from "react";
 import { useMoralis } from "react-moralis";
-import { UserContext } from "../../providers/user";
+import { useNavigate } from "react-router-dom";
 
 const MetamaskButton = () => {
-  const { refreshUser } = useContext(UserContext);
+  let navigate = useNavigate();
+
   const { authenticate, isAuthenticated, logout } = useMoralis();
+
+  async function logIn() {
+    await authenticate({
+      signingMessage: "Log in using Moralis",
+    });
+    navigate("/dashboard");
+  }
 
   async function logOut() {
     await logout();
-    await refreshUser();
+    navigate("/");
   }
 
   return isAuthenticated ? (
@@ -16,13 +23,7 @@ const MetamaskButton = () => {
       Disconnect MetaMask
     </button>
   ) : (
-    <button
-      onClick={() =>
-        authenticate({
-          signingMessage: "Log in using Moralis",
-        })
-      }
-      className="btn btn-warning btn-lg">
+    <button onClick={logIn} className="btn btn-warning btn-lg">
       Connect w/ MetaMask
     </button>
   );

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const TokenPreview = styled.div`
   background: #f5f6fa;
-  padding-bottom: 24px;
+  padding-bottom: ${(props) => (props.placeholder ? "0px" : "24px")};
 `;
 
 export const MetaContainer = styled.div`

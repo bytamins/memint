@@ -15,28 +15,6 @@ const Dashboard = () => {
       />
 
       <SuggestedDays />
-
-      <div className="row mb-5">
-        <div className="col-md-12">
-          <h4>Recommended Dates</h4>
-        </div>
-        <div className="col-md-12">
-          <hr />
-        </div>
-        <div className="col-md-12">
-          <ul>
-            <li>Halloween</li>
-            <li>Thanksgiving</li>
-            <li>Election Day</li>
-          </ul>
-          <ul>
-            <li>New Jobs</li>
-            <li>Graduation</li>
-            <li>Moving</li>
-            <li>Enagements/Wedding</li>
-          </ul>
-        </div>
-      </div>
     </div>
   );
 };

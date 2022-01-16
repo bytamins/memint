@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { useMoralis } from "react-moralis";
 import logo from "../../assets/logo.png";
 import rinkeby from "../../assets/rinkeby.png";
 import polygon from "../../assets/polygon.png";
@@ -10,31 +11,50 @@ import {
   StyledLinks,
 } from "./styled";
 import c from "./content.json";
-const Header = ({ user, network, setNetwork }) => {
+const Header = () => {
   const { pathname } = useLocation();
+  const { user } = useMoralis();
+
   const address = user ? user.get("ethAddress") : "";
   return (
     <StyledHeader>
       <div className="container">
         <nav className="navbar navbar-expand-lg navbar-light">
           <Link className="navbar-brand" to="/">
-            {/* 🍬 memint */}
             <img src={logo} alt="memint logo" height="28" />
           </Link>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <StyledLinks className="navbar-nav">
-              {c.pages.map((page) => (
-                <li className="nav-item" key={page.path}>
-                  <Link
-                    className={`nav-link ${pathname === page.path && "active"}`}
-                    to={page.path}>
-                    {page.name}
-                  </Link>
-                </li>
-              ))}
-            </StyledLinks>
+            {user ? (
+              <StyledLinks className="navbar-nav">
+                {c.pages.authenticated.map((page) => (
+                  <li className="nav-item" key={page.path}>
+                    <Link
+                      className={`nav-link ${
+                        pathname.indexOf(page.path) > -1 && "active"
+                      }`}
+                      to={page.path}>
+                      {page.name}
+                    </Link>
+                  </li>
+                ))}
+              </StyledLinks>
+            ) : (
+              <StyledLinks className="navbar-nav">
+                {c.pages.public.map((page) => (
+                  <li className="nav-item" key={page.path}>
+                    <Link
+                      className={`nav-link ${
+                        pathname.indexOf(page.path) > -1 && "active"
+                      }`}
+                      to={page.path}>
+                      {page.name}
+                    </Link>
+                  </li>
+                ))}
+              </StyledLinks>
+            )}
             <div className="d-flex align-items-center">
-              <NetworkButton
+              {/* <NetworkButton
                 onClick={() =>
                   setNetwork(network === "Polygon" ? "Rinkeby" : "Polygon")
                 }>
@@ -46,7 +66,7 @@ const Header = ({ user, network, setNetwork }) => {
                   />
                   {network}
                 </Address>
-              </NetworkButton>
+              </NetworkButton> */}
               {address ? (
                 <AddressLink to="/profile">
                   <Address>{`${address.substring(0, 6)}...${address.substring(
