@@ -21,7 +21,10 @@ const EditDay = ({ day }) => {
   async function saveChanges() {
     try {
       setSaving(true);
-      day.set("image_url", details.image_url);
+      if (details.image_url) {
+        day.set("image_url", details.image_url);
+      }
+
       day.set("title", details.title);
       day.set("description", details.description);
       await day.save();

@@ -11,7 +11,7 @@ const Dashboard = () => {
     <div className="container mt-5">
       <PageTitle
         title="Dashboard"
-        description="You can mint any day of your past into an NFT!"
+        description="Check out all of the features memint offers."
       />
 
       <SuggestedDays />

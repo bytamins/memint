@@ -1,13 +1,16 @@
 import { useState } from "react";
 import Moralis from "moralis";
 import { useMoralis } from "react-moralis";
+import { toast } from "react-toastify";
 
-const SellButton = ({ asset }) => {
+const SellButton = ({ asset, getNFT }) => {
   const [price, setPrice] = useState("");
   const { tokenAddress, tokenId } = asset;
+  const [selling, setSelling] = useState(false);
   const { user } = useMoralis();
   async function sellOrder() {
     try {
+      setSelling(true);
       await Moralis.Plugins.opensea.createSellOrder({
         network: "testnet",
         tokenAddress,
@@ -17,8 +20,12 @@ const SellButton = ({ asset }) => {
         startAmount: price,
         endAmount: price,
       });
+      toast.success("You've placed a sell order!");
+      getNFT();
+      setSelling(false);
     } catch (err) {
-      console.error(err);
+      toast.error(err.message);
+      setSelling(false);
     }
   }
 
@@ -43,8 +50,11 @@ const SellButton = ({ asset }) => {
           />
           <span className="input-group-text">ETH</span>
         </div>
-        <button className="btn btn-success w-100" onClick={sellOrder}>
-          Create Sell Order
+        <button
+          className="btn btn-success w-100"
+          onClick={sellOrder}
+          disabled={selling}>
+          {selling ? `Creating Order...` : `Create Sell Order`}
         </button>
       </div>
     </div>

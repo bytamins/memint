@@ -53,8 +53,9 @@ const Home = () => {
           <div className="col-md-6 offset-md-2">
             <h1>Welcome to memint!</h1>
             <p>
-              Do you want to create your own NFTs? All your need is a memory
-              &amp; a photo.
+              Do you want to create + sell your own NFTs?
+              <br />
+              All your need is a memory &amp; an image.
             </p>
             <MetamaskButton />
           </div>

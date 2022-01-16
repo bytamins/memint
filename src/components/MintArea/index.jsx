@@ -15,11 +15,12 @@ const headers = {
 };
 
 const MintArea = ({ day }) => {
-  const { network, contactAddress } = useContext(NetworkContext);
+  const { network, contractAddress } = useContext(NetworkContext);
   let navigate = useNavigate();
 
   const { user } = useMoralis();
   const [progress, setProgress] = useState(10);
+  const [minting, setMinting] = useState(false);
 
   useEffect(() => {
     let newProgress = progress;
@@ -41,6 +42,7 @@ const MintArea = ({ day }) => {
 
   async function mint() {
     try {
+      setMinting(true);
       const { data } = await axios.request({
         method,
         url: "https://api.nftport.xyz/v0/metadata",
@@ -69,7 +71,7 @@ const MintArea = ({ day }) => {
         headers,
         data: {
           chain: network,
-          contract_address: contactAddress,
+          contract_address: contractAddress,
           metadata_uri,
           mint_to_address: user.get("ethAddress"),
         },
@@ -78,8 +80,10 @@ const MintArea = ({ day }) => {
       day.set("mint_response", response.data);
       day.save();
       toast.success("You minted an NFT!");
+      setMinting(false);
       navigate(`/minted/${day.id}`);
     } catch (err) {
+      setMinting(false);
       toast.error(err.message);
     }
   }
@@ -88,10 +92,11 @@ const MintArea = ({ day }) => {
     <ButtonContainer>
       <button
         onClick={mint}
+        disabled={minting}
         className={`btn btn-success btn-lg w-100 ${
           progress < 100 && "disabled"
         }`}>
-        Mint NFT
+        {minting ? "Minting..." : "Mint NFT"}
       </button>
       <div className="progress mt-4">
         <div

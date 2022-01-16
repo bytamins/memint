@@ -12,43 +12,46 @@ const OpenSeaInfo = ({ transaction_hash }) => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessaage] = useState("");
   const [asset, setAsset] = useState(null);
-  useEffect(() => {
-    async function getNFT() {
-      setErrorMessaage("");
-      setLoading(true);
-      const { data } = await axios.request({
-        method: "GET",
-        url: `https://api.nftport.xyz/v0/mints/${transaction_hash}`,
-        params: { chain: network },
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: NFTPORT_API_KEY,
-        },
-      });
-      console.log(data);
-      if (data.response === "OK") {
-        if (network === "rinkeby") {
-          const response = await Moralis.Plugins.opensea.getAsset({
-            network: "testnet",
-            tokenAddress: data.contract_address,
-            tokenId: data.token_id,
-          });
-          console.log(response);
-          setAsset(response);
-        } else {
-          setAsset({
-            network,
-            openseaLink: `https://opensea.io/assets/matic/${data.contract_address}/${data.token_id}`,
-            sellOrders: [],
-          });
-        }
-      } else {
-        setErrorMessaage(data.error);
-      }
 
-      setLoading(false);
+  async function getNFT() {
+    setErrorMessaage("");
+    setLoading(true);
+    const { data } = await axios.request({
+      method: "GET",
+      url: `https://api.nftport.xyz/v0/mints/${transaction_hash}`,
+      params: { chain: network },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: NFTPORT_API_KEY,
+      },
+    });
+    console.log(data);
+    if (data.response === "OK") {
+      if (network === "rinkeby") {
+        const response = await Moralis.Plugins.opensea.getAsset({
+          network: "testnet",
+          tokenAddress: data.contract_address,
+          tokenId: data.token_id,
+        });
+        console.log(response);
+        setAsset(response);
+      } else {
+        setAsset({
+          network,
+          openseaLink: `https://opensea.io/assets/matic/${data.contract_address}/${data.token_id}`,
+          sellOrders: [],
+        });
+      }
+    } else {
+      setErrorMessaage(data.error);
     }
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
     getNFT();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transaction_hash, network]);
 
   if (loading) return <LoadingIcon />;
@@ -88,9 +91,9 @@ const OpenSeaInfo = ({ transaction_hash }) => {
       {network === "rinkeby" ? (
         <>
           {asset.sellOrders.length === 0 ? (
-            <SellButton asset={asset} />
+            <SellButton asset={asset} getNFT={getNFT} />
           ) : (
-            <CancelOrderButton asset={asset} />
+            <CancelOrderButton asset={asset} getNFT={getNFT} />
           )}
         </>
       ) : (

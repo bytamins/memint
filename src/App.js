@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Moralis } from "moralis";
@@ -27,11 +27,14 @@ import Roadmap from "./pages/Public/Roadmap";
 import { NetworkConsumer } from "./utils/networkProvider";
 
 function App() {
+  let navigate = useNavigate();
+
   const [loading, setLoading] = useState(true);
   const { user, logout, isAuthenticated, isInitialized } = useMoralis();
 
   Moralis.onAccountsChanged(async function (accounts) {
     logout();
+    navigate("/");
   });
 
   useEffect(() => {
